@@ -94,43 +94,6 @@
     let frames = 0; (function loop(){ frames++; if(frames>240) return; requestAnimationFrame(loop); ctx.clearRect(0,0,canvas.width,canvas.height); pieces.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.y>canvas.height) p.y=-10; ctx.fillStyle=p.c; ctx.fillRect(p.x,p.y,p.r,p.r); }); })();
   }
 
-  // Tool: get-top-products => calls our backend /api/top
-  async function toolGetTopProducts(args){
-    const { date } = normalizeArgs(args);
-    const api = window.PH_AGENT_API || 'http://localhost:8787';
-    // Default to current date in India timezone when not provided
-    const d = date || new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
-    try {
-      const r = await fetch(`${api}/api/top?date=${encodeURIComponent(d)}`);
-      const j = await r.json();
-      // Shape expected by the agent tool schema
-      return { posts: (j.posts || []).map(p => ({
-        id: p.id, name: p.name, tagline: p.tagline, url: p.url, website: p.website, votesCount: p.votesCount, thumbnail: p.thumbnail
-      })) };
-    } catch (e) {
-      console.warn('[get-top-products] failed', e);
-      return { posts: [] };
-    }
-  }
-
-  // Tool: search-products => calls our backend /api/search
-  async function toolSearchProducts(args){
-    const { query } = normalizeArgs(args);
-    const api = window.PH_AGENT_API || 'http://localhost:8787';
-    const q = (query || '').toString();
-    if (!q) return { hits: [] };
-    try {
-      const r = await fetch(`${api}/api/search?q=${encodeURIComponent(q)}`);
-      const j = await r.json();
-      return { hits: (j.hits || []).map(h => ({
-        id: h.objectID, objectID: h.objectID, name: h.name, tagline: h.tagline, url: h.url, website: h.website, votesCount: h.votesCount, thumbnail: h.thumbnail
-      })) };
-    } catch (e) {
-      console.warn('[search-products] failed', e);
-      return { hits: [] };
-    }
-  }
-
   // --- CometChat Launch Options ---
 
   const COMETCHAT_LAUNCH_OPTIONS = {
@@ -147,10 +110,7 @@
     aiAssistantTools:{
       // Confetti tools
       'show-confetti': handleConfetti,
-      'confetti-tool': handleConfetti,
-      // Product Hunt agent tools
-      'get-top-products': toolGetTopProducts,
-      'search-products': toolSearchProducts,
+      'confetti-tool': handleConfetti
     }
   }
 
