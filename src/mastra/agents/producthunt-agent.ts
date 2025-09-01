@@ -2,7 +2,7 @@ import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
 import { Memory } from '@mastra/memory';
 import { LibSQLStore } from '@mastra/libsql';
-import { topProductsTool, searchProductsTool } from '../tools/producthunt-tools.js';
+import { topProductsTool, searchProductsTool, confettiTool } from '../tools/producthunt-tools.js';
 
 export const productHuntAgent = new Agent({
   name: 'Product Hunt Agent',
@@ -22,7 +22,7 @@ Guidelines:
 - If external APIs are unavailable, explain gracefully that limited demo data is shown.
 `,
   model: openai('gpt-5'),
-  tools: { topProductsTool, searchProductsTool },
+  tools: { topProductsTool, searchProductsTool, confettiTool },
   memory: new Memory({
     storage: new LibSQLStore({
       url: ':memory:',
