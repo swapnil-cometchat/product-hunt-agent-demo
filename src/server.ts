@@ -77,8 +77,10 @@ const server = http.createServer(async (req, res) => {
         json(res, 400, { error: 'Missing q' });
         return;
       }
-      const hits = await searchProducts(q);
-      json(res, 200, { hits, q });
+      const limitRaw = searchParams.get('limit') || searchParams.get('first') || '10';
+      const limit = Math.max(1, Math.min(50, Number(limitRaw) || 10));
+      const hits = await searchProducts(q, { limit });
+      json(res, 200, { hits, q, limit });
       return;
     }
 

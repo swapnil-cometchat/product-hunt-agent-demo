@@ -37,7 +37,14 @@ export const searchProductsTool = createTool({
   id: 'search-products',
   description: 'Search Product Hunt posts by keyword using Algolia',
   inputSchema: z.object({
-    query: z.string().describe('Search keywords'),
+    query: z.string().describe('Search keywords (natural language is okay)'),
+    limit: z
+      .number()
+      .int()
+      .min(1)
+      .max(50)
+      .optional()
+      .describe('Max results to return (1-50, default 10).'),
   }),
   outputSchema: z.object({
     hits: z.array(
@@ -52,7 +59,8 @@ export const searchProductsTool = createTool({
     ),
   }),
   execute: async ({ context }) => {
-    const hits = await searchProducts(context.query);
+    const limit = Math.max(1, Math.min(50, Number((context as any).limit ?? 10)));
+    const hits = await searchProducts((context as any).query, { limit });
     return {
       hits: hits.map((h: any) => ({
         id: h.objectID,

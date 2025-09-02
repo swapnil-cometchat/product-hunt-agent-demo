@@ -289,77 +289,38 @@ export interface AlgoliaHit {
   votesCount?: number;
 }
 
-export async function searchProducts(query: string): Promise<AlgoliaHit[]> {
-  // Product Hunt wiki exposes public Algolia search credentials for the public index.
-  // Ref: https://github.com/producthunt/producthunt-api/wiki/Product-Hunt-APIs#algolia-search-api
-  const PUBLIC_APP_ID = '0H4SMABBSG';
-  const PUBLIC_SEARCH_KEY = '9670d2d619b9d07859448d7628eea5f3';
-  const DEFAULT_INDEX = 'Post_production'; // Note: singular "Post_production" per wiki
-  const ALT_INDEX = 'Posts_production'; // Some environments use plural
+export async function searchProducts(query: string, opts?: { limit?: number }): Promise<AlgoliaHit[]> {
+  // Use only the public PH Algolia GET endpoint and credentials as specified.
+  const ALGOLIA_HOST = 'https://0h4smabbsg-dsn.algolia.net';
+  const INDEX = 'Post_production';
+  const APP_ID = '0H4SMABBSG';
+  const SEARCH_KEY = '9670d2d619b9d07859448d7628eea5f3';
 
-  const appId = process.env.ALGOLIA_APP_ID || PUBLIC_APP_ID;
-  const apiKey = process.env.ALGOLIA_SEARCH_API_KEY || PUBLIC_SEARCH_KEY;
-  const indexName = process.env.ALGOLIA_INDEX_NAME || DEFAULT_INDEX;
+  const hitsPerPage = Math.max(1, Math.min(50, Number(opts?.limit ?? 10)));
 
-  const mapHits = (hitsRaw: any[]) =>
-    hitsRaw.map((h: any) => ({
+  const url = `${ALGOLIA_HOST}/1/indexes/${encodeURIComponent(INDEX)}?query=${encodeURIComponent(query)}&hitsPerPage=${encodeURIComponent(
+    String(hitsPerPage),
+  )}`;
+
+  try {
+    const resp = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'X-Algolia-API-Key': SEARCH_KEY,
+        'X-Algolia-Application-Id': APP_ID,
+      },
+    });
+    if (!resp.ok) return [];
+    const json = (await resp.json()) as any;
+    const hitsRaw = Array.isArray(json?.hits) ? json.hits : [];
+    return hitsRaw.map((h: any) => ({
       objectID: h.objectID ?? h.id ?? String(h.id ?? ''),
       name: h.name,
       tagline: h.tagline ?? h.tag_line ?? h.tagLine,
       url: h.url ?? h.post_url,
       votesCount: h.votesCount ?? h.votes_count,
     }));
-
-  // Helper to run POST/GET with a given index name and return hits (or null on failure)
-  const runForIndex = async (idx: string): Promise<AlgoliaHit[] | null> => {
-    // Try POST /query first
-    try {
-      const postEndpoint = `https://${appId}-dsn.algolia.net/1/indexes/${encodeURIComponent(idx)}/query`;
-      const postResp = await fetch(postEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Algolia-Application-Id': appId,
-          'X-Algolia-API-Key': apiKey,
-        },
-        body: JSON.stringify({ query, hitsPerPage: 10 }),
-      });
-      if (postResp.ok) {
-        const json = (await postResp.json()) as any;
-        const hits = mapHits(json?.hits ?? []);
-        if (hits.length) return hits;
-      }
-    } catch {
-      // ignore and try GET
-    }
-
-    // Fallback GET
-    try {
-      const getEndpoint = `https://${appId}-dsn.algolia.net/1/indexes/${encodeURIComponent(idx)}?query=${encodeURIComponent(
-        query,
-      )}&hitsPerPage=10`;
-      const getResp = await fetch(getEndpoint, {
-        method: 'GET',
-        headers: {
-          'X-Algolia-Application-Id': appId,
-          'X-Algolia-API-Key': apiKey,
-        },
-      });
-      if (getResp.ok) {
-        const json = (await getResp.json()) as any;
-        const hits = mapHits(json?.hits ?? []);
-        if (hits.length) return hits;
-      }
-    } catch {
-      // ignore
-    }
-
-    return null;
-  };
-
-  // Try default index first, then alternate plural index
-  const firstTry = await runForIndex(indexName);
-  if (firstTry && firstTry.length) return firstTry;
-  const secondTry = await runForIndex(indexName === DEFAULT_INDEX ? ALT_INDEX : DEFAULT_INDEX);
-  return secondTry ?? [];
+  } catch {
+    return [];
+  }
 }
