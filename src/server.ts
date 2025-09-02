@@ -1,6 +1,6 @@
 import http from 'http';
 import { URL } from 'url';
-import { getTopProductsByDay, searchProducts, getTopProductsByVotes } from './services/producthunt.js';
+import { searchProducts, getTopProductsByVotes } from './services/producthunt.js';
 import { productHuntAgent } from './mastra/agents/producthunt-agent.js';
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 8787;
@@ -37,13 +37,6 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (req.method === 'GET' && pathname === '/api/top') {
-      const date = searchParams.get('date') || new Date().toISOString().slice(0, 10);
-      const posts = await getTopProductsByDay(date);
-      json(res, 200, { posts, date });
-      return;
-    }
-
-    if (req.method === 'GET' && pathname === '/api/top-votes') {
       const firstRaw = searchParams.get('limit') || searchParams.get('first') || '3';
       const first = Math.max(1, Math.min(10, Number(firstRaw) || 3));
       const posts = await getTopProductsByVotes(first);
