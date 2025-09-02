@@ -37,26 +37,25 @@ Prereqs: Node 20+.
 
 ## Environment Variables
 
-For real data (otherwise the app uses safe demo mocks or public search creds):
+For real Product Hunt post data and agent answers:
 
-- `PRODUCTHUNT_API_TOKEN` — Bearer token for Product Hunt GraphQL v2 (`https://api.producthunt.com/v2/api/graphql`).
-- Algolia Search for Product Hunt
-   - By default, the app uses the public Product Hunt Algolia credentials from the PH wiki:
-      - Application ID: `0H4SMABBSG`
-      - Search-Only API Key: `9670d2d619b9d07859448d7628eea5f3`
-      - Index Name: `Post_production` (falls back to `Posts_production` if empty)
-   - You can override via env vars:
-      - `ALGOLIA_APP_ID`
-      - `ALGOLIA_SEARCH_API_KEY`
-      - `ALGOLIA_INDEX_NAME`
+- `PRODUCTHUNT_API_TOKEN` — Bearer token for Product Hunt GraphQL v2 (`https://api.producthunt.com/v2/api/graphql`). Required for the `/api/top*` endpoints to return live posts; if omitted, those endpoints respond with empty arrays.
 - `OPENAI_API_KEY` — For the agent’s Q&A about launching.
 
-You can add these to your `.env` (not committed) and export in your shell before running the server.
+Search note: Product search uses the public Product Hunt Algolia index with fixed public credentials (from the PH wiki) and does not require any env vars.
 
 ## API
 
-- `GET /api/top?date=YYYY-MM-DD` → `{ posts: PHPost[], date }`
-- `GET /api/search?q=term` → `{ hits: Hit[], q }`
+- `GET /api/health` → `{ ok: true }`
+- `GET /api/top?limit=3` → `{ posts: PHPost[], first: number, order: 'VOTES' }`
+   - Top all-time by votes. `limit` (aka `first`) is clamped to 1–10.
+- `GET /api/top-week?limit=3&days=7` → `{ posts, first, days, order: 'RANKING', window: 'rolling-week' }`
+- `GET /api/top-range?timeframe=today&tz=America/New_York&limit=3` → `{ posts, first, timeframe, tz, order: 'RANKING' }`
+   - Timeframes supported: today, yesterday, this-week, last-week, this-month, last-month, YYYY-MM-DD, or ranges like `from:2024-08-01 to:2024-08-15`.
+- `GET /api/search?q=term&limit=10` → `{ hits: Hit[], q, limit }`
+   - Backed by Product Hunt’s public Algolia index using this request:
+      - URL: `https://0h4smabbsg-dsn.algolia.net/1/indexes/Post_production?query={q}&hitsPerPage={limit}`
+      - Headers: `X-Algolia-API-Key: 9670d2d619b9d07859448d7628eea5f3`, `X-Algolia-Application-Id: 0H4SMABBSG`
 - `POST /api/chat` → `{ reply: string }` with JSON body `{ message: string }`
 
 CORS is enabled for demo usage.
@@ -76,7 +75,7 @@ CORS is enabled for demo usage.
 
 ## Notes
 
-- Without API keys, the UI still works with mock data to demonstrate flow.
+- Without `PRODUCTHUNT_API_TOKEN`, top posts endpoints return empty arrays; search still works using the public Algolia index.
 - The chat agent uses OpenAI via `@ai-sdk/openai` and Mastra’s Agent. Provide `OPENAI_API_KEY` for real answers.
 - This is a minimal demo; harden auth, rate limits, and error handling before production.
 
