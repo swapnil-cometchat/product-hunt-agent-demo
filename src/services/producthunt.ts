@@ -44,7 +44,7 @@ export function parseTimeframe(
     const [_, y, m, d] = dateMatch;
     const start = DateTime.fromISO(`${y}-${m}-${d}T00:00:00`, { zone: tz });
     const end = start.plus({ days: 1 });
-    return { postedAfter: start.toUTC().toISO(), postedBefore: end.toUTC().toISO(), label: 'day' };
+  return { postedAfter: start.toUTC().toISO()!, postedBefore: end.toUTC().toISO()!, label: 'day' };
   }
 
   // Support explicit range via `from:YYYY-MM-DD to:YYYY-MM-DD` or `from=... to=...`
@@ -54,7 +54,7 @@ export function parseTimeframe(
     const start = DateTime.fromISO(`${fromStr}T00:00:00`, { zone: tz });
     // Use end as next day 00:00 to make [start, end) interval
     const end = DateTime.fromISO(`${toStr}T00:00:00`, { zone: tz }).plus({ days: 1 });
-    return { postedAfter: start.toUTC().toISO(), postedBefore: end.toUTC().toISO(), label: 'range' };
+  return { postedAfter: start.toUTC().toISO()!, postedBefore: end.toUTC().toISO()!, label: 'range' };
   }
 
   // Normalize common phrases
@@ -63,37 +63,37 @@ export function parseTimeframe(
   if (!norm || is('today')) {
     const start = nowZ.startOf('day');
     const end = start.plus({ days: 1 });
-    return { postedAfter: start.toUTC().toISO(), postedBefore: end.toUTC().toISO(), label: 'today' };
+  return { postedAfter: start.toUTC().toISO()!, postedBefore: end.toUTC().toISO()!, label: 'today' };
   }
 
   if (is('yesterday')) {
     const start = nowZ.startOf('day').minus({ days: 1 });
     const end = nowZ.startOf('day');
-    return { postedAfter: start.toUTC().toISO(), postedBefore: end.toUTC().toISO(), label: 'yesterday' };
+  return { postedAfter: start.toUTC().toISO()!, postedBefore: end.toUTC().toISO()!, label: 'yesterday' };
   }
 
   if (is('this week', 'this-week', 'week')) {
     const start = nowZ.startOf('week'); // Luxon defaults to Monday; acceptable as canonical
     const end = nowZ; // up to now
-    return { postedAfter: start.toUTC().toISO(), postedBefore: end.toUTC().toISO(), label: 'this-week' };
+  return { postedAfter: start.toUTC().toISO()!, postedBefore: end.toUTC().toISO()!, label: 'this-week' };
   }
 
   if (is('last week', 'last-week')) {
     const start = nowZ.startOf('week').minus({ weeks: 1 });
     const end = nowZ.startOf('week');
-    return { postedAfter: start.toUTC().toISO(), postedBefore: end.toUTC().toISO(), label: 'last-week' };
+  return { postedAfter: start.toUTC().toISO()!, postedBefore: end.toUTC().toISO()!, label: 'last-week' };
   }
 
   if (is('this month', 'this-month', 'month')) {
     const start = nowZ.startOf('month');
     const end = nowZ; // up to now
-    return { postedAfter: start.toUTC().toISO(), postedBefore: end.toUTC().toISO(), label: 'this-month' };
+  return { postedAfter: start.toUTC().toISO()!, postedBefore: end.toUTC().toISO()!, label: 'this-month' };
   }
 
   if (is('last month', 'last-month')) {
     const start = nowZ.startOf('month').minus({ months: 1 });
     const end = nowZ.startOf('month');
-    return { postedAfter: start.toUTC().toISO(), postedBefore: end.toUTC().toISO(), label: 'last-month' };
+  return { postedAfter: start.toUTC().toISO()!, postedBefore: end.toUTC().toISO()!, label: 'last-month' };
   }
 
   // Fallback: treat as a rolling N days if user wrote like "past 7 days" or "last 10 days"
@@ -102,13 +102,13 @@ export function parseTimeframe(
     const n = Math.min(31, Math.max(1, parseInt(ndays[1], 10)));
     const start = nowZ.minus({ days: n });
     const end = nowZ;
-    return { postedAfter: start.toUTC().toISO(), postedBefore: end.toUTC().toISO(), label: `last-${n}-days` };
+  return { postedAfter: start.toUTC().toISO()!, postedBefore: end.toUTC().toISO()!, label: `last-${n}-days` };
   }
 
   // Default to today if unrecognized
   const start = nowZ.startOf('day');
   const end = start.plus({ days: 1 });
-  return { postedAfter: start.toUTC().toISO(), postedBefore: end.toUTC().toISO(), label: 'today' };
+  return { postedAfter: start.toUTC().toISO()!, postedBefore: end.toUTC().toISO()!, label: 'today' };
 }
 
 export async function getTopProductsByVotes(first: number = 3): Promise<PHPost[]> {
@@ -290,33 +290,76 @@ export interface AlgoliaHit {
 }
 
 export async function searchProducts(query: string): Promise<AlgoliaHit[]> {
-  const appId = process.env.ALGOLIA_APP_ID;
-  const apiKey = process.env.ALGOLIA_SEARCH_API_KEY;
-  const indexName = process.env.ALGOLIA_INDEX_NAME || 'Posts_production';
-  if (!appId || !apiKey) return [];
+  // Product Hunt wiki exposes public Algolia search credentials for the public index.
+  // Ref: https://github.com/producthunt/producthunt-api/wiki/Product-Hunt-APIs#algolia-search-api
+  const PUBLIC_APP_ID = '0H4SMABBSG';
+  const PUBLIC_SEARCH_KEY = '9670d2d619b9d07859448d7628eea5f3';
+  const DEFAULT_INDEX = 'Post_production'; // Note: singular "Post_production" per wiki
+  const ALT_INDEX = 'Posts_production'; // Some environments use plural
 
-  try {
-    const endpoint = `https://${appId}-dsn.algolia.net/1/indexes/${encodeURIComponent(indexName)}/query`;
-    const resp = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Algolia-Application-Id': appId,
-        'X-Algolia-API-Key': apiKey,
-      },
-      body: JSON.stringify({ query, hitsPerPage: 10 }),
-    });
-    if (!resp.ok) return [];
-    const json = (await resp.json()) as any;
-    const hitsRaw = json?.hits ?? [];
-    return hitsRaw.map((h: any) => ({
+  const appId = process.env.ALGOLIA_APP_ID || PUBLIC_APP_ID;
+  const apiKey = process.env.ALGOLIA_SEARCH_API_KEY || PUBLIC_SEARCH_KEY;
+  const indexName = process.env.ALGOLIA_INDEX_NAME || DEFAULT_INDEX;
+
+  const mapHits = (hitsRaw: any[]) =>
+    hitsRaw.map((h: any) => ({
       objectID: h.objectID ?? h.id ?? String(h.id ?? ''),
       name: h.name,
       tagline: h.tagline ?? h.tag_line ?? h.tagLine,
       url: h.url ?? h.post_url,
       votesCount: h.votesCount ?? h.votes_count,
     }));
-  } catch {
-    return [];
-  }
+
+  // Helper to run POST/GET with a given index name and return hits (or null on failure)
+  const runForIndex = async (idx: string): Promise<AlgoliaHit[] | null> => {
+    // Try POST /query first
+    try {
+      const postEndpoint = `https://${appId}-dsn.algolia.net/1/indexes/${encodeURIComponent(idx)}/query`;
+      const postResp = await fetch(postEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Algolia-Application-Id': appId,
+          'X-Algolia-API-Key': apiKey,
+        },
+        body: JSON.stringify({ query, hitsPerPage: 10 }),
+      });
+      if (postResp.ok) {
+        const json = (await postResp.json()) as any;
+        const hits = mapHits(json?.hits ?? []);
+        if (hits.length) return hits;
+      }
+    } catch {
+      // ignore and try GET
+    }
+
+    // Fallback GET
+    try {
+      const getEndpoint = `https://${appId}-dsn.algolia.net/1/indexes/${encodeURIComponent(idx)}?query=${encodeURIComponent(
+        query,
+      )}&hitsPerPage=10`;
+      const getResp = await fetch(getEndpoint, {
+        method: 'GET',
+        headers: {
+          'X-Algolia-Application-Id': appId,
+          'X-Algolia-API-Key': apiKey,
+        },
+      });
+      if (getResp.ok) {
+        const json = (await getResp.json()) as any;
+        const hits = mapHits(json?.hits ?? []);
+        if (hits.length) return hits;
+      }
+    } catch {
+      // ignore
+    }
+
+    return null;
+  };
+
+  // Try default index first, then alternate plural index
+  const firstTry = await runForIndex(indexName);
+  if (firstTry && firstTry.length) return firstTry;
+  const secondTry = await runForIndex(indexName === DEFAULT_INDEX ? ALT_INDEX : DEFAULT_INDEX);
+  return secondTry ?? [];
 }

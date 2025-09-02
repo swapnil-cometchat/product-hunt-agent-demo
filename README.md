@@ -37,12 +37,18 @@ Prereqs: Node 20+.
 
 ## Environment Variables
 
-For real data (otherwise the app uses safe demo mocks):
+For real data (otherwise the app uses safe demo mocks or public search creds):
 
 - `PRODUCTHUNT_API_TOKEN` — Bearer token for Product Hunt GraphQL v2 (`https://api.producthunt.com/v2/api/graphql`).
-- `ALGOLIA_APP_ID` — Algolia app ID for Product Hunt search.
-- `ALGOLIA_SEARCH_API_KEY` — Algolia Search-Only API Key.
-- `ALGOLIA_INDEX_NAME` — Defaults to `Posts_production` if omitted.
+- Algolia Search for Product Hunt
+   - By default, the app uses the public Product Hunt Algolia credentials from the PH wiki:
+      - Application ID: `0H4SMABBSG`
+      - Search-Only API Key: `9670d2d619b9d07859448d7628eea5f3`
+      - Index Name: `Post_production` (falls back to `Posts_production` if empty)
+   - You can override via env vars:
+      - `ALGOLIA_APP_ID`
+      - `ALGOLIA_SEARCH_API_KEY`
+      - `ALGOLIA_INDEX_NAME`
 - `OPENAI_API_KEY` — For the agent’s Q&A about launching.
 
 You can add these to your `.env` (not committed) and export in your shell before running the server.
@@ -60,9 +66,11 @@ CORS is enabled for demo usage.
 - Push the `web/` directory to your public repo and enable GitHub Pages (source: `/(root)` or `/docs`, or an action). If you use `web/` as Pages root, set that in the repo settings.
 - In `web/index.html`, set `window.PH_AGENT_API` to your deployed API server URL (Render/Vercel/Fly/etc.). Example:
 
-  <script>
-    window.PH_AGENT_API = 'https://your-api.example.com';
-  </script>
+   ```html
+   <script>
+      window.PH_AGENT_API = 'https://your-api.example.com';
+   </script>
+   ```
 
 - The page includes a chat widget with a Product Hunt–style icon, and a Launch button that fires confetti.
 

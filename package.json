@@ -24,11 +24,12 @@
     "@mastra/libsql": "^0.13.1",
     "@mastra/loggers": "^0.10.6",
     "@mastra/memory": "^0.12.1",
-    "luxon": "^3.5.0",
     "axios": "^1.11.0",
+    "luxon": "^3.5.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@types/luxon": "^3.7.1",
     "@types/node": "^24.2.1",
     "mastra": "^0.10.20",
     "typescript": "^5.9.2"
