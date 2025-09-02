@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PH Mock – Top Products Launching Today</title>
+    <title>Top Products Launching Today — Mock</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,7 +15,6 @@
         --border: #e6e8eb;
         --card: #ffffff;
         --ph: #da552f;
-        --accent: #e8613c33;
       }
       * { box-sizing: border-box; }
       body { margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: var(--bg); color: var(--text); }
@@ -169,8 +168,8 @@
       const COMETCHAT_LAUNCH_OPTIONS = {
         targetElementID: 'cometChatMount',  // Element ID to mount the widget
         isDocked: true, // floating bubble
-        width: '350px',
-        height: '550px',
+        width: '700px',
+        height: '500px',
         chatType: 'user',
         defaultChatID: '36735525-0266-4405-96c1-509afa10c334',
         variantID: '68b5727f5b631d82aa900be4',
@@ -215,7 +214,7 @@
           </div>
         </div>
         <div class="actions">
-          <button class="btn ghost">Subscribe</button>
+          <button class="btn ghost" onclick="handleConfetti()">Subscribe</button>
           <a class="btn primary" href="#">Sign in</a>
         </div>
       </div>
@@ -235,12 +234,12 @@
 
           <h2>Top Products Launching Today</h2>
           <div class="list">
-            <!-- 1 -->
+            <!-- 1: CometChat (real) -->
             <article class="item">
               <div class="idx">1.</div>
               <div class="logo" style="background:#6e56cf">CC</div>
               <div class="content">
-                <div class="title">CometChat</div>
+                <div class="title"><a href="https://cometchat.com/" target="_blank" rel="noopener">CometChat</a></div>
                 <div class="subtitle">In-app chat, voice & video for web and mobile.</div>
                 <div class="tags">
                   <span>Communication</span><span class="dot"></span><span>SDK</span><span class="dot"></span><span>Artificial Intelligence</span>
@@ -258,7 +257,7 @@
               </div>
             </article>
 
-            <!-- 2 -->
+            <!-- 2: Dummy -->
             <article class="item">
               <div class="idx">2.</div>
               <div class="logo" style="background:#4aa7ff">D1</div>
@@ -273,7 +272,7 @@
               </div>
             </article>
 
-            <!-- 3 -->
+            <!-- 3: Dummy -->
             <article class="item">
               <div class="idx">3.</div>
               <div class="logo" style="background:#00c2a8">D2</div>
@@ -288,7 +287,7 @@
               </div>
             </article>
 
-            <!-- 4 -->
+            <!-- 4: Dummy -->
             <article class="item">
               <div class="idx">4.</div>
               <div class="logo" style="background:#22b8cf">D3</div>
@@ -303,7 +302,7 @@
               </div>
             </article>
 
-            <!-- 5 -->
+            <!-- 5: Dummy -->
             <article class="item">
               <div class="idx">5.</div>
               <div class="logo" style="background:#1f2937">D4</div>
@@ -318,7 +317,7 @@
               </div>
             </article>
 
-            <!-- 6 -->
+            <!-- 6: Dummy -->
             <article class="item">
               <div class="idx">6.</div>
               <div class="logo" style="background:#8b5cf6">D5</div>
@@ -362,16 +361,6 @@
               <div class="ttitle">How much are you willing to pay for influencer promotion?</div>
               <div class="tmeta"><span>Upvote (37)</span><span>•</span><span>44</span></div>
             </div>
-            <div class="thread">
-              <div class="channel">p/general</div>
-              <div class="ttitle">How much are you willing to pay for influencer promotion?</div>
-              <div class="tmeta"><span>Upvote (37)</span><span>•</span><span>44</span></div>
-            </div>
-            <div class="thread">
-              <div class="channel">p/general</div>
-              <div class="ttitle">How much are you willing to pay for influencer promotion?</div>
-              <div class="tmeta"><span>Upvote (37)</span><span>•</span><span>44</span></div>
-            </div>
             <a class="pill-link" href="#">View all</a>
           </div>
         </aside>
@@ -385,3 +374,4 @@
     <div id="cometChatMount"></div>
   </body>
   </html>
+
