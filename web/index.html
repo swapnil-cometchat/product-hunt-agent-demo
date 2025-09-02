@@ -52,7 +52,8 @@
       .list { display:flex; flex-direction: column; gap: 8px; }
       .item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; display:grid; grid-template-columns: auto auto 1fr auto; align-items:start; gap: 14px; }
       .idx { width: 26px; text-align: right; font-weight: 700; color:#2b3645; }
-      .logo { width: 44px; height: 44px; border-radius: 12px; display:grid; place-items:center; font-weight: 800; color:#fff; background: #7c5cff; }
+      .logo { width: 44px; height: 44px; border-radius: 12px; display:grid; place-items:center; font-weight: 800; color:#fff; background: #7c5cff; overflow: hidden; }
+      .logo img, .logo svg { width: 100%; height: 100%; display: block; }
       .content { min-width: 0; }
       .title { font-weight: 700; }
       .subtitle { color: var(--muted); margin-top: 4px; }
@@ -61,6 +62,8 @@
       .stats { display:flex; gap: 10px; align-items:center; }
       .chip { display:flex; gap: 8px; align-items:center; padding: 8px 10px; border-radius: 12px; border: 1px solid var(--border); min-width: 64px; justify-content:center; color:#2b3645; }
       .chip svg { width: 16px; height: 16px; color:#6b7785; }
+      .item { position: relative; }
+      .item .item-overlay { position: absolute; inset: 0; z-index: 1; border-radius: 12px; }
 
       /* Sidebar */
       .side { position: sticky; top: 72px; display:flex; flex-direction:column; gap: 14px; }
@@ -76,6 +79,10 @@
       /* Blur non-CometChat products and trending items */
       .list .item:not(:first-child) { filter: blur(4px); opacity: 0.85; pointer-events: none; user-select: none; }
       .side .box .thread, .side .box .pill-link { filter: blur(4px); opacity: 0.85; pointer-events: none; user-select: none; }
+
+      /* Toast */
+      .toast { position: fixed; left: 18px; bottom: 18px; background: #111827; color: #fff; border-radius: 10px; padding: 10px 12px; font-size: 14px; line-height: 1.35; box-shadow: 0 10px 30px rgba(0,0,0,.2); opacity: 0; transform: translateY(10px); pointer-events: none; transition: opacity .2s ease, transform .2s ease; max-width: 360px; z-index: 1000; }
+      .toast.show { opacity: 1; transform: translateY(0); }
 
       /* Footer */
       .footer { color:#798391; font-size: 13px; padding: 18px 0; }
@@ -178,7 +185,7 @@
         defaultChatID: '36735525-0266-4405-96c1-509afa10c334',
         variantID: '68b5727f5b631d82aa900be4',
         aiAssistantTools: { 
-          'confettiTool': handleConfetti
+          'confetti-tool': handleConfetti
         },
       };
 
@@ -208,17 +215,17 @@
               <input placeholder="Search (⌘ + k)" />
             </div>
             <nav class="nav">
-              <a href="#">Launches ▾</a>
-              <a href="#">Products ▾</a>
-              <a href="#">News ▾</a>
-              <a href="#">Forums ▾</a>
-              <a href="#">Advertise</a>
+              <a href="#" data-demo-nav>Launches ▾</a>
+              <a href="#" data-demo-nav>Products ▾</a>
+              <a href="#" data-demo-nav>News ▾</a>
+              <a href="#" data-demo-nav>Forums ▾</a>
+              <a href="#" data-demo-nav>Advertise</a>
             </nav>
           </div>
         </div>
         <div class="actions">
-          <button class="btn ghost" onclick="handleConfetti()">Subscribe</button>
-          <a class="btn primary" href="#">Sign in</a>
+          <button class="btn ghost" data-demo-nav>Subscribe</button>
+          <a class="btn primary" href="#" data-demo-nav>Sign in</a>
         </div>
       </div>
     </header>
@@ -230,7 +237,7 @@
             <div class="icon">🏆</div>
             <div>
               <strong>Welcome to Product Hunt!</strong>
-              <div class="subtitle">The place to launch and discover new tech products. <a href="#" style="color:#e04c2f; font-weight:600;">Take a tour.</a></div>
+              <div class="subtitle">The place to launch and discover new tech products. <a href="#" style="color:#e04c2f; font-weight:600;" data-demo-nav>Take a tour.</a></div>
             </div>
             <button class="close" aria-label="Dismiss">×</button>
           </div>
@@ -238,9 +245,12 @@
           <h2>Top Products Launching Today</h2>
           <div class="list">
             <!-- 1: CometChat (real) -->
-            <article class="item">
+            <article class="item" data-cometchat-item>
               <div class="idx">1.</div>
-              <div class="logo" style="background:#6e56cf">CC</div>
+              <div class="logo" style="background:#000">
+                <img alt="CometChat logo" src="./cometchat-logo.png"
+                     onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 200\'%3E%3Crect rx=\'32\' width=\'200\' height=\'200\' fill=\'%23000\'/%3E%3Cpath d=\'M58 60c0-8.837 7.163-16 16-16h48a8 8 0 0 1 8 8v22c0 4.418-3.582 8-8 8H94l-14 14v-14H74c-8.837 0-16-7.163-16-16V60z\' fill=\'%23fff\'/%3E%3Cpath d=\'M138 128c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36c12.23 0 22.998 6.194 29.373 15.6l-16.08 10.72C111.827 113.2 105.28 110 98 110c-11.046 0-20 8.954-20 20s8.954 20 20 20c8.284 0 15.274-5.04 18.29-12.2H102v-16h36v6.2z\' fill=\'%23fff\'/%3E%3C/svg%3E';" />
+              </div>
               <div class="content">
                 <div class="title"><a href="https://cometchat.com/" target="_blank" rel="noopener">CometChat</a></div>
                 <div class="subtitle">In-app chat, voice & video for web and mobile.</div>
@@ -251,13 +261,14 @@
               <div class="stats">
                 <div class="chip" title="Upvotes">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 4l6 8H6l6-8Z"/></svg>
-                  <span>55</span>
+                  <span>1,356</span>
                 </div>
                 <div class="chip" title="Comments">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V6a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/></svg>
-                  <span>341</span>
+                  <span>932</span>
                 </div>
               </div>
+              <a class="item-overlay" href="https://cometchat.com/" target="_blank" rel="noopener" aria-label="Open CometChat"></a>
             </article>
 
             <!-- 2: Dummy -->
@@ -385,5 +396,29 @@
     </main>
     <!-- CometChat mount point (for docked widget this can be empty) -->
     <div id="cometChatMount"></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      function showToast(message) {
+        const el = document.getElementById('toast');
+        if (!el) return;
+        el.textContent = message;
+        el.classList.add('show');
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => el.classList.remove('show'), 4000);
+      }
+
+      function demoToast(e) {
+        if (e) e.preventDefault();
+        showToast("This is a demo, so navigation isn’t functional. Please click the Product Hunt icon in the bottom-right corner to start a chat with our AI Agent.");
+        return false;
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[data-demo-nav]').forEach((el) => el.addEventListener('click', demoToast));
+        const cc = document.querySelector('[data-cometchat-item]');
+        if (cc) cc.addEventListener('click', () => window.open('https://cometchat.com/', '_blank'));
+      });
+    </script>
   </body>
   </html>
