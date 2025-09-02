@@ -1,6 +1,6 @@
 import http from 'http';
 import { URL } from 'url';
-import { searchProducts, getTopProductsByVotes } from './services/producthunt.js';
+import { searchProducts, getTopProductsByVotes, getTopProductsThisWeek, getTopProductsByTimeframe } from './services/producthunt.js';
 import { productHuntAgent } from './mastra/agents/producthunt-agent.js';
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 8787;
@@ -41,6 +41,33 @@ const server = http.createServer(async (req, res) => {
       const first = Math.max(1, Math.min(10, Number(firstRaw) || 3));
       const posts = await getTopProductsByVotes(first);
       json(res, 200, { posts, first, order: 'VOTES' });
+      return;
+    }
+
+    if (req.method === 'GET' && pathname === '/api/top-week') {
+      const firstRaw = searchParams.get('limit') || searchParams.get('first') || '3';
+      const first = Math.max(1, Math.min(10, Number(firstRaw) || 3));
+      const daysRaw = searchParams.get('days');
+      const days = Math.max(1, Math.min(31, Number(daysRaw) || 7));
+      const posts = await getTopProductsThisWeek(first, days);
+      json(res, 200, { posts, first, days, order: 'RANKING', window: 'rolling-week' });
+      return;
+    }
+
+    // Generic timeframe endpoint with timezone handling.
+    // Defaults: timeframe=today, tz=America/New_York
+    // Examples:
+    //   /api/top-range?timeframe=today
+    //   /api/top-range?timeframe=this-week&tz=America/New_York
+    //   /api/top-range?timeframe=2024-09-01
+    //   /api/top-range?timeframe=from:2024-08-01%20to:2024-08-15
+    if (req.method === 'GET' && pathname === '/api/top-range') {
+      const firstRaw = searchParams.get('limit') || searchParams.get('first') || '3';
+      const first = Math.max(1, Math.min(10, Number(firstRaw) || 3));
+      const timeframe = (searchParams.get('timeframe') || searchParams.get('tf') || 'today').toString();
+      const tz = (searchParams.get('tz') || 'America/New_York').toString();
+      const posts = await getTopProductsByTimeframe({ first, timeframe, tz });
+      json(res, 200, { posts, first, timeframe, tz, order: 'RANKING' });
       return;
     }
 

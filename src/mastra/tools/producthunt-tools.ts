@@ -1,6 +1,6 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
-import { getTopProductsByVotes, searchProducts } from '../../services/producthunt.js';
+import { getTopProductsByVotes, searchProducts, getTopProductsByTimeframe, parseTimeframe } from '../../services/producthunt.js';
 
 export const topProductsTool = createTool({
   id: 'get-top-products',
@@ -62,6 +62,64 @@ export const searchProductsTool = createTool({
         url: h.url,
         votesCount: h.votesCount,
       })),
+    };
+  },
+});
+
+export const topProductsByTimeframeTool = createTool({
+  id: 'get-top-products-by-timeframe',
+  description:
+    'Get top Product Hunt posts for a timeframe (default: today in America/New_York). Timeframes: today, yesterday, this-week, last-week, this-month, last-month, YYYY-MM-DD, or ranges like "from:2024-08-01 to:2024-08-15".',
+  inputSchema: z
+    .object({
+      timeframe: z
+        .string()
+        .optional()
+        .describe('Natural timeframe, e.g. "today", "this-week", "2024-09-01". Defaults to today.'),
+      tz: z
+        .string()
+        .optional()
+        .describe('IANA timezone, e.g. "America/New_York". Defaults to America/New_York.'),
+      limit: z
+        .number()
+        .int()
+        .min(1)
+        .max(10)
+        .optional()
+        .describe('Number of posts to return (1-10, default 3).'),
+    })
+    .optional(),
+  outputSchema: z.object({
+    posts: z.array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        tagline: z.string().optional(),
+        url: z.string().optional(),
+        votesCount: z.number().optional(),
+      }),
+    ),
+    timeframe: z.string(),
+    tz: z.string(),
+    window: z.object({ postedAfter: z.string(), postedBefore: z.string() }).optional(),
+  }),
+  execute: async ({ context }) => {
+    const timeframe = (context?.timeframe || 'today').toString();
+    const tz = (context?.tz || 'America/New_York').toString();
+    const limit = Math.max(1, Math.min(10, Number(context?.limit ?? 3)));
+    const window = parseTimeframe(timeframe, tz);
+    const posts = await getTopProductsByTimeframe({ first: limit, timeframe, tz });
+    return {
+      posts: posts.map((p: any) => ({
+        id: p.id,
+        name: p.name,
+        tagline: p.tagline,
+        url: p.url,
+        votesCount: p.votesCount,
+      })),
+      timeframe,
+      tz,
+      window: { postedAfter: window.postedAfter, postedBefore: window.postedBefore },
     };
   },
 });
