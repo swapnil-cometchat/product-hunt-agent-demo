@@ -73,6 +73,10 @@
       .tmeta { color: #748190; font-size: 13px; display:flex; gap: 12px; align-items:center; }
       .pill-link { display:grid; place-items:center; padding: 10px; border:1px solid var(--border); background:#fff; color:#2b3645; border-radius: 12px; font-weight:600; }
 
+      /* Blur non-CometChat products and trending items */
+      .list .item:not(:first-child) { filter: blur(4px); opacity: 0.85; pointer-events: none; user-select: none; }
+      .side .box .thread, .side .box .pill-link { filter: blur(4px); opacity: 0.85; pointer-events: none; user-select: none; }
+
       /* Footer */
       .footer { color:#798391; font-size: 13px; padding: 18px 0; }
 
