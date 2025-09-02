@@ -3,80 +3,337 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Product Hunt Agent — Demo</title>
+    <title>Product Hunt — Home (Static)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css" />
-    <script>
-      // Configure API base URL for the page. For GitHub Pages, set window.PH_AGENT_API in a script tag.
-      window.PH_AGENT_API = window.PH_AGENT_API || (location.origin.includes('github.io') ? 'https://your-server.example.com' : 'http://localhost:8787');
-    </script>
+    <style>
+      :root {
+        --ph-orange: #da552f;
+        --bg: #f7f7f8;
+        --text: #1f2328;
+        --muted: #57606a;
+        --card: #ffffff;
+        --border: #e6e8eb;
+        --green: #11a668;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: var(--bg); color: var(--text); }
+      a { color: inherit; text-decoration: none; }
+      .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+
+      /* Header */
+      .header { position: sticky; top: 0; z-index: 20; background: var(--card); border-bottom: 1px solid var(--border); }
+      .header-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px; padding: 10px 0; }
+      .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+      .brand .mark { width: 28px; height: 28px; border-radius: 50%; background: var(--ph-orange); color: #fff; display: grid; place-items: center; font-weight: 800; }
+      .search { display: flex; align-items: center; gap: 10px; }
+      .search input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: #fff; }
+      .nav { display: flex; gap: 14px; align-items: center; font-size: 14px; color: var(--muted); }
+      .nav a:hover { color: var(--text); }
+      .actions { display: flex; gap: 8px; align-items: center; }
+      .btn { cursor: pointer; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: #fff; font-weight: 600; }
+      .btn.primary { background: var(--ph-orange); color: #fff; border-color: var(--ph-orange); }
+
+      /* Layout */
+      .main { padding: 18px 0 32px; }
+      .grid { display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start; }
+
+      /* Feed */
+      .section-title { display: flex; align-items: baseline; gap: 10px; margin: 8px 0 14px; }
+      .section-title h2 { margin: 0; font-size: 18px; }
+      .section-title .date { color: var(--muted); font-size: 13px; }
+      .feed { display: flex; flex-direction: column; gap: 10px; }
+      .card { display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+      .vote { display: grid; place-items: center; width: 56px; height: 56px; border: 1px solid var(--border); border-radius: 12px; cursor: pointer; user-select: none; }
+      .vote .count { font-weight: 700; }
+      .thumb { width: 56px; height: 56px; border-radius: 12px; background: #f0f2f4; display: grid; place-items: center; font-weight: 700; color: var(--muted); }
+      .meta { min-width: 0; }
+      .title { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .tagline { color: var(--muted); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .meta-row { display: flex; gap: 12px; align-items: center; font-size: 13px; color: var(--muted); margin-top: 6px; }
+      .meta-row .tag { padding: 2px 8px; border: 1px solid var(--border); border-radius: 999px; font-size: 12px; color: var(--text); background: #fff; }
+      .links { display: flex; gap: 10px; }
+      .links a { color: var(--ph-orange); font-weight: 600; }
+
+      /* Sidebar */
+      .side { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 68px; }
+      .box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+      .box h3 { margin: 0 0 10px; font-size: 14px; text-transform: uppercase; letter-spacing: .02em; color: var(--muted); }
+      .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+      .chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); border-radius: 999px; padding: 6px 10px; font-size: 13px; background: #fff; }
+      .avatars { display: flex; }
+      .avatar { width: 28px; height: 28px; border-radius: 50%; background: #e9eef2; border: 1px solid var(--border); margin-left: -6px; display: grid; place-items: center; font-size: 12px; color: var(--muted); }
+      .avatar:first-child { margin-left: 0; }
+      .newsletter { display: flex; gap: 8px; }
+      .newsletter input { flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: 10px; }
+      .small { color: var(--muted); font-size: 13px; }
+
+      /* Footer */
+      .footer { border-top: 1px solid var(--border); margin-top: 32px; padding: 16px 0; color: var(--muted); font-size: 13px; }
+      .footer .links { display: flex; gap: 12px; flex-wrap: wrap; }
+
+      /* Responsive */
+      @media (max-width: 980px) {
+        .grid { grid-template-columns: 1fr; }
+        .side { position: static; }
+      }
+    </style>
   </head>
   <body>
-    <header class="ph-header">
-      <div class="ph-logo">
-        <!-- Inline Product Hunt-like logo -->
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="14" cy="14" r="14" fill="#DA552F"/>
-          <path d="M10 7h6.5a4.5 4.5 0 0 1 0 9H10V7Zm3 3v3h3.5a1.5 1.5 0 0 0 0-3H13Z" fill="white"/>
-        </svg>
-        <span>Product Hunt Agent</span>
+    <!-- Header -->
+    <header class="header">
+      <div class="container header-row">
+        <a href="#" class="brand" aria-label="Product Hunt Home">
+          <span class="mark">P</span>
+          <span>Product Hunt</span>
+        </a>
+        <div class="search">
+          <nav class="nav" aria-label="Primary">
+            <a href="#">Products</a>
+            <a href="#">Collections</a>
+            <a href="#">Discussions</a>
+            <a href="#">Ship</a>
+            <a href="#">Jobs</a>
+          </nav>
+        </div>
+        <div class="actions">
+          <a class="btn" href="./cometchat.html">Chat</a>
+          <a class="btn" href="#">Sign in</a>
+          <a class="btn primary" href="#">Submit</a>
+        </div>
       </div>
-      <div class="ph-actions">
-        <input id="dateInput" type="date" />
-        <button id="loadTopBtn" class="btn primary">Top 3</button>
-        <button id="launchBtn" class="btn success">Launch 🎉</button>
+      <div class="container" style="padding: 0 0 12px;">
+        <input aria-label="Search" placeholder="Search products" style="width:100%; padding:12px; border:1px solid var(--border); border-radius: 10px;" />
       </div>
     </header>
 
-    <main class="ph-main">
-      <section class="ph-search">
-        <input id="searchInput" placeholder="Search products…" />
-        <button id="searchBtn" class="btn">Search</button>
-      </section>
-
-      <section>
-        <h2>Top 3 Products</h2>
-        <div id="topList" class="ph-list"></div>
-      </section>
-
-      <section>
-        <h2>Search Results</h2>
-        <div id="searchList" class="ph-list"></div>
-      </section>
-    </main>
-
-    <!-- Chat Widget -->
-    <div id="chatWidget" class="chat-widget">
-      <div id="chatToggle" class="chat-toggle" title="Ask about launching on Product Hunt">
-        <!-- PH icon as chat bubble -->
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="14" cy="14" r="14" fill="#DA552F"/>
-          <path d="M10 7h6.5a4.5 4.5 0 0 1 0 9H10V7Zm3 3v3h3.5a1.5 1.5 0 0 0 0-3H13Z" fill="white"/>
-        </svg>
-      </div>
-      <div id="chatPanel" class="chat-panel hidden">
-        <div class="chat-header">
-          <div class="chat-title">
-            <svg width="20" height="20" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="14" cy="14" r="14" fill="#DA552F"/>
-              <path d="M10 7h6.5a4.5 4.5 0 0 1 0 9H10V7Zm3 3v3h3.5a1.5 1.5 0 0 0 0-3H13Z" fill="white"/>
-            </svg>
-            <span>PH Agent</span>
+    <!-- Main -->
+    <main class="main container">
+      <div class="grid">
+        <!-- Feed -->
+        <section>
+          <div class="section-title">
+            <h2>Today</h2>
+            <span class="date">Static snapshot</span>
           </div>
-          <button id="chatClose" class="chat-close">✕</button>
-        </div>
-        <div id="chatMessages" class="chat-messages"></div>
-        <div class="chat-input">
-          <input id="chatText" placeholder="Ask about launching on Product Hunt…" />
-          <button id="chatSend" class="btn primary">Send</button>
-        </div>
-      </div>
-    </div>
+          <div class="feed">
+            <!-- Card 1 -->
+            <article class="card">
+              <div class="vote" aria-label="Upvote">
+                <div class="count">312</div>
+              </div>
+              <div class="meta">
+                <div class="title">LaunchPad — Simple launch checklists</div>
+                <div class="tagline">Organize your Product Hunt launch in minutes.</div>
+                <div class="meta-row">
+                  <span class="tag">Productivity</span>
+                  <span class="tag">Marketing</span>
+                  <div class="links">
+                    <a href="#">Visit</a>
+                    <a href="#">42 comments</a>
+                  </div>
+                </div>
+              </div>
+              <div class="thumb">LP</div>
+            </article>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <script src="./app.js" type="module"></script>
+            <!-- Card 2 -->
+            <article class="card">
+              <div class="vote" aria-label="Upvote">
+                <div class="count">254</div>
+              </div>
+              <div class="meta">
+                <div class="title">PixelSnapper</div>
+                <div class="tagline">Measure anything on your screen precisely.</div>
+                <div class="meta-row">
+                  <span class="tag">Design</span>
+                  <span class="tag">Mac</span>
+                  <div class="links">
+                    <a href="#">Visit</a>
+                    <a href="#">28 comments</a>
+                  </div>
+                </div>
+              </div>
+              <div class="thumb">PS</div>
+            </article>
+
+            <!-- Card 3 -->
+            <article class="card">
+              <div class="vote" aria-label="Upvote">
+                <div class="count">221</div>
+              </div>
+              <div class="meta">
+                <div class="title">FocusFlow</div>
+                <div class="tagline">Pomodoro sessions that adapt to you.</div>
+                <div class="meta-row">
+                  <span class="tag">AI</span>
+                  <span class="tag">Productivity</span>
+                  <div class="links">
+                    <a href="#">Visit</a>
+                    <a href="#">36 comments</a>
+                  </div>
+                </div>
+              </div>
+              <div class="thumb">FF</div>
+            </article>
+
+            <!-- Card 4 -->
+            <article class="card">
+              <div class="vote" aria-label="Upvote">
+                <div class="count">198</div>
+              </div>
+              <div class="meta">
+                <div class="title">InboxZero</div>
+                <div class="tagline">Clear your inbox with one click.</div>
+                <div class="meta-row">
+                  <span class="tag">Email</span>
+                  <span class="tag">Automation</span>
+                  <div class="links">
+                    <a href="#">Visit</a>
+                    <a href="#">19 comments</a>
+                  </div>
+                </div>
+              </div>
+              <div class="thumb">IZ</div>
+            </article>
+
+            <!-- Card 5 -->
+            <article class="card">
+              <div class="vote" aria-label="Upvote">
+                <div class="count">176</div>
+              </div>
+              <div class="meta">
+                <div class="title">SnapDocs</div>
+                <div class="tagline">Convert screenshots into editable docs.</div>
+                <div class="meta-row">
+                  <span class="tag">Developer Tools</span>
+                  <span class="tag">Docs</span>
+                  <div class="links">
+                    <a href="#">Visit</a>
+                    <a href="#">22 comments</a>
+                  </div>
+                </div>
+              </div>
+              <div class="thumb">SD</div>
+            </article>
+
+            <!-- Card 6 -->
+            <article class="card">
+              <div class="vote" aria-label="Upvote">
+                <div class="count">159</div>
+              </div>
+              <div class="meta">
+                <div class="title">TrailMix</div>
+                <div class="tagline">Plan outdoor trips with AI routes.</div>
+                <div class="meta-row">
+                  <span class="tag">Travel</span>
+                  <span class="tag">Maps</span>
+                  <div class="links">
+                    <a href="#">Visit</a>
+                    <a href="#">14 comments</a>
+                  </div>
+                </div>
+              </div>
+              <div class="thumb">TM</div>
+            </article>
+
+            <!-- Card 7 -->
+            <article class="card">
+              <div class="vote" aria-label="Upvote">
+                <div class="count">142</div>
+              </div>
+              <div class="meta">
+                <div class="title">TinyPages</div>
+                <div class="tagline">Build landing pages in under 5 minutes.</div>
+                <div class="meta-row">
+                  <span class="tag">No-Code</span>
+                  <span class="tag">Web</span>
+                  <div class="links">
+                    <a href="#">Visit</a>
+                    <a href="#">17 comments</a>
+                  </div>
+                </div>
+              </div>
+              <div class="thumb">TP</div>
+            </article>
+
+            <!-- Card 8 -->
+            <article class="card">
+              <div class="vote" aria-label="Upvote">
+                <div class="count">133</div>
+              </div>
+              <div class="meta">
+                <div class="title">PromptShelf</div>
+                <div class="tagline">Curated prompts for your daily tasks.</div>
+                <div class="meta-row">
+                  <span class="tag">AI</span>
+                  <span class="tag">Tools</span>
+                  <div class="links">
+                    <a href="#">Visit</a>
+                    <a href="#">9 comments</a>
+                  </div>
+                </div>
+              </div>
+              <div class="thumb">PR</div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Sidebar -->
+        <aside class="side">
+          <div class="box">
+            <h3>Trending Topics</h3>
+            <div class="tags">
+              <span class="chip">AI</span>
+              <span class="chip">Developer Tools</span>
+              <span class="chip">Design</span>
+              <span class="chip">Marketing</span>
+              <span class="chip">No-Code</span>
+              <span class="chip">Productivity</span>
+            </div>
+          </div>
+
+          <div class="box">
+            <h3>Makers working today</h3>
+            <div class="avatars">
+              <span class="avatar">A</span>
+              <span class="avatar">B</span>
+              <span class="avatar">C</span>
+              <span class="avatar">D</span>
+              <span class="avatar">E</span>
+            </div>
+            <p class="small" style="margin-top:8px;">Join the conversation in <a href="#" style="color:var(--ph-orange); font-weight:600;">Discussions</a>.</p>
+          </div>
+
+          <div class="box">
+            <h3>Newsletter</h3>
+            <p class="small">The best new products in your inbox.</p>
+            <div class="newsletter">
+              <input placeholder="Your email" />
+              <button class="btn primary">Subscribe</button>
+            </div>
+          </div>
+
+          <div class="box">
+            <h3>Build in public</h3>
+            <p class="small">Ship pages help you grow an audience and collect feedback early.</p>
+            <button class="btn" style="width:100%;">Learn more</button>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="links">
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+          <a href="#">Careers</a>
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+        </div>
+        <p style="margin:8px 0 0;">Static demo. Not affiliated with Product Hunt.</p>
+      </footer>
+    </main>
   </body>
   </html>
-
