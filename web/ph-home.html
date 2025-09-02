@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PH Mock – Top Products Launching Today</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg: #f6f7f9;
+        --text: #1f2328;
+        --muted: #5c6670;
+        --border: #e6e8eb;
+        --card: #ffffff;
+        --ph: #da552f;
+        --accent: #e8613c33;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: var(--bg); color: var(--text); }
+      a { color: inherit; text-decoration: none; }
+      .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+      /* Header */
+      .topbar { position: sticky; top: 0; z-index: 30; background: var(--card); border-bottom: 1px solid var(--border); }
+      .row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px; padding: 10px 0; }
+      .brand { display: flex; align-items: center; gap: 12px; }
+      .brand .p { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: var(--ph); font-weight: 800; }
+      .searchbar { display:flex; align-items:center; gap:8px; }
+      .search { flex: 1; display:flex; align-items:center; gap:8px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); max-width: 460px; }
+      .search input { border: none; outline: none; flex: 1; font: inherit; color: var(--text); }
+      .nav { display: flex; gap: 18px; margin-left: 16px; color: var(--muted); font-size: 14px; }
+      .nav a:hover { color: var(--text); }
+      .actions { display:flex; gap: 10px; }
+      .btn { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); background: #fff; font-weight: 600; cursor: pointer; }
+      .btn.ghost { background: #fff; }
+      .btn.primary { background: #ff5c36; color: #fff; border-color: #ff5c36; }
+
+      /* Layout */
+      .main { padding: 20px 0 40px; }
+      .grid { display:grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
+
+      /* Welcome banner */
+      .banner { background: #fff6ef; border: 1px solid #ffe5d6; color:#6f4b3b; padding: 12px 14px; border-radius: 12px; display:flex; align-items:center; gap: 12px; }
+      .banner .icon { width: 28px; height: 28px; border-radius: 50%; display:grid; place-items:center; background: #ffe9dc; color:#b36b4e; }
+      .banner .close { margin-left:auto; width:28px; height:28px; border-radius:50%; border: 1px solid #ffd8c2; background:#fff; color:#b36b4e; display:grid; place-items:center; cursor:pointer; }
+
+      /* Section title */
+      h2 { font-size: 22px; margin: 20px 0 10px; }
+
+      /* Product list */
+      .list { display:flex; flex-direction: column; gap: 8px; }
+      .item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; display:grid; grid-template-columns: auto auto 1fr auto; align-items:start; gap: 14px; }
+      .idx { width: 26px; text-align: right; font-weight: 700; color:#2b3645; }
+      .logo { width: 44px; height: 44px; border-radius: 12px; display:grid; place-items:center; font-weight: 800; color:#fff; background: #7c5cff; }
+      .content { min-width: 0; }
+      .title { font-weight: 700; }
+      .subtitle { color: var(--muted); margin-top: 4px; }
+      .tags { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; color: var(--muted); font-size: 13px; }
+      .dot::before { content: '·'; margin-right: 10px; color: #a0a8b0; }
+      .stats { display:flex; gap: 10px; align-items:center; }
+      .chip { display:flex; gap: 8px; align-items:center; padding: 8px 10px; border-radius: 12px; border: 1px solid var(--border); min-width: 64px; justify-content:center; color:#2b3645; }
+      .chip svg { width: 16px; height: 16px; color:#6b7785; }
+
+      /* Sidebar */
+      .side { position: sticky; top: 72px; display:flex; flex-direction:column; gap: 14px; }
+      .box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+      .box h3 { margin: 0 0 10px; font-size: 16px; }
+      .thread { display:flex; flex-direction:column; gap: 4px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+      .thread:last-child { border-bottom: 0; }
+      .channel { color: #748190; font-size: 13px; }
+      .ttitle { font-weight: 600; }
+      .tmeta { color: #748190; font-size: 13px; display:flex; gap: 12px; align-items:center; }
+      .pill-link { display:grid; place-items:center; padding: 10px; border:1px solid var(--border); background:#fff; color:#2b3645; border-radius: 12px; font-weight:600; }
+
+      /* Footer */
+      .footer { color:#798391; font-size: 13px; padding: 18px 0; }
+
+      @media (max-width: 980px){
+        .grid { grid-template-columns: 1fr; }
+        .side { position: static; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container row">
+        <div class="brand">
+          <span class="p">P</span>
+          <div class="searchbar">
+            <div class="search">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input placeholder="Search (⌘ + k)" />
+            </div>
+            <nav class="nav">
+              <a href="#">Launches ▾</a>
+              <a href="#">Products ▾</a>
+              <a href="#">News ▾</a>
+              <a href="#">Forums ▾</a>
+              <a href="#">Advertise</a>
+            </nav>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn ghost">Subscribe</button>
+          <a class="btn primary" href="#">Sign in</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container main">
+      <div class="grid">
+        <section>
+          <div class="banner">
+            <div class="icon">🏆</div>
+            <div>
+              <strong>Welcome to Product Hunt!</strong>
+              <div class="subtitle">The place to launch and discover new tech products. <a href="#" style="color:#e04c2f; font-weight:600;">Take a tour.</a></div>
+            </div>
+            <button class="close" aria-label="Dismiss">×</button>
+          </div>
+
+          <h2>Top Products Launching Today</h2>
+          <div class="list">
+            <!-- 1 -->
+            <article class="item">
+              <div class="idx">1.</div>
+              <div class="logo" style="background:#6e56cf">CC</div>
+              <div class="content">
+                <div class="title">CometChat</div>
+                <div class="subtitle">In-app chat, voice & video for web and mobile.</div>
+                <div class="tags">
+                  <span>Communication</span><span class="dot"></span><span>SDK</span><span class="dot"></span><span>Artificial Intelligence</span>
+                </div>
+              </div>
+              <div class="stats">
+                <div class="chip" title="Upvotes">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 4l6 8H6l6-8Z"/></svg>
+                  <span>55</span>
+                </div>
+                <div class="chip" title="Comments">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V6a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/></svg>
+                  <span>341</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- 2 -->
+            <article class="item">
+              <div class="idx">2.</div>
+              <div class="logo" style="background:#4aa7ff">D1</div>
+              <div class="content">
+                <div class="title">Dummy Product One</div>
+                <div class="subtitle">Backend and frontend for your AI agents.</div>
+                <div class="tags"><span>Slack</span><span class="dot"></span><span>Developer Tools</span><span class="dot"></span><span>Artificial Intelligence</span></div>
+              </div>
+              <div class="stats">
+                <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 4l6 8H6l6-8Z"/></svg><span>33</span></div>
+                <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V6a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/></svg><span>416</span></div>
+              </div>
+            </article>
+
+            <!-- 3 -->
+            <article class="item">
+              <div class="idx">3.</div>
+              <div class="logo" style="background:#00c2a8">D2</div>
+              <div class="content">
+                <div class="title">Dummy Product Two</div>
+                <div class="subtitle">AI avatars that truly act like humans.</div>
+                <div class="tags"><span>Artificial Intelligence</span><span class="dot"></span><span>Photo & Video</span><span class="dot"></span><span>Social marketing</span></div>
+              </div>
+              <div class="stats">
+                <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 4l6 8H6l6-8Z"/></svg><span>55</span></div>
+                <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V6a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/></svg><span>341</span></div>
+              </div>
+            </article>
+
+            <!-- 4 -->
+            <article class="item">
+              <div class="idx">4.</div>
+              <div class="logo" style="background:#22b8cf">D3</div>
+              <div class="content">
+                <div class="title">Dummy Product Three</div>
+                <div class="subtitle">Cursor for sales teams.</div>
+                <div class="tags"><span>Sales</span><span class="dot"></span><span>SaaS</span><span class="dot"></span><span>Artificial Intelligence</span></div>
+              </div>
+              <div class="stats">
+                <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 4l6 8H6l6-8Z"/></svg><span>50</span></div>
+                <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V6a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/></svg><span>256</span></div>
+              </div>
+            </article>
+
+            <!-- 5 -->
+            <article class="item">
+              <div class="idx">5.</div>
+              <div class="logo" style="background:#1f2937">D4</div>
+              <div class="content">
+                <div class="title">Dummy Product Four</div>
+                <div class="subtitle">Design anything with one prompt.</div>
+                <div class="tags"><span>Design Tools</span><span class="dot"></span><span>Artificial Intelligence</span><span class="dot"></span><span>Design</span></div>
+              </div>
+              <div class="stats">
+                <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 4l6 8H6l6-8Z"/></svg><span>15</span></div>
+                <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V6a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/></svg><span>236</span></div>
+              </div>
+            </article>
+
+            <!-- 6 -->
+            <article class="item">
+              <div class="idx">6.</div>
+              <div class="logo" style="background:#8b5cf6">D5</div>
+              <div class="content">
+                <div class="title">Dummy Product Five</div>
+                <div class="subtitle">Delegate tasks and track progress.</div>
+                <div class="tags"><span>Productivity</span><span class="dot"></span><span>Developer Tools</span><span class="dot"></span><span>Artificial Intelligence</span></div>
+              </div>
+              <div class="stats">
+                <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 4l6 8H6l6-8Z"/></svg><span>12</span></div>
+                <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V6a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/></svg><span>195</span></div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <aside class="side">
+          <div class="box">
+            <h3>Trending Forum Threads</h3>
+            <div class="thread">
+              <div class="channel">p/hippocam</div>
+              <div class="ttitle">HippoCam v25.9.1 — Now with Siri & Spotlight Support!</div>
+              <div class="tmeta">
+                <span>Upvote (14)</span>
+                <span>•</span>
+                <span>0</span>
+              </div>
+            </div>
+            <div class="thread">
+              <div class="channel">p/producthunt</div>
+              <div class="ttitle">Hiring? Looking for work? [Startup Roles September 2025]</div>
+              <div class="tmeta"><span>Upvote (27)</span><span>•</span><span>10</span></div>
+            </div>
+            <div class="thread">
+              <div class="channel">s/p/slashit-app</div>
+              <div class="ttitle">Stop Rewriting Onboarding Emails — Use Dynamic Templates Instead</div>
+              <div class="tmeta"><span>Upvote (24)</span><span>•</span><span>0</span></div>
+            </div>
+            <div class="thread">
+              <div class="channel">p/general</div>
+              <div class="ttitle">How much are you willing to pay for influencer promotion?</div>
+              <div class="tmeta"><span>Upvote (37)</span><span>•</span><span>44</span></div>
+            </div>
+            <a class="pill-link" href="#">View all</a>
+          </div>
+        </aside>
+      </div>
+
+      <footer class="footer">
+        Static mock page for layout reference. Not affiliated with Product Hunt.
+      </footer>
+    </main>
+  </body>
+  </html>
+
