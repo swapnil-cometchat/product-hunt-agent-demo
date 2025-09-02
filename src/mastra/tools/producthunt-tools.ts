@@ -69,12 +69,12 @@ export const searchProductsTool = createTool({
 /**
  * Frontend Action: Confetti
  * This tool returns a payload describing a confetti effect. The frontend should
- * listen for tool invocation results where tool.id === 'show-confetti' and then
+ * listen for tool invocation results where tool.id === 'confetti-tool' and then
  * trigger a confetti animation (e.g. using `canvas-confetti`) with the returned
  * parameters.
  */
 export const confettiTool = createTool({
-  id: 'show-confetti',
+  id: 'confetti-tool',
   description: "Trigger a celebratory confetti animation in the user's browser.",
   inputSchema: z
     .object({
