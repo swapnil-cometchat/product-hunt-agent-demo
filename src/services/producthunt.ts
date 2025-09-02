@@ -137,6 +137,72 @@ export async function getTopProductsByDay(dateISO: string): Promise<PHPost[]> {
   }
 }
 
+// Get globally top products by total votes (all-time), limited by `first`.
+export async function getTopProductsByVotes(first: number = 3): Promise<PHPost[]> {
+  const token = process.env.PRODUCTHUNT_API_TOKEN;
+  if (!token) {
+    return [...MOCK_POSTS]
+      .sort((a, b) => (b.votesCount || 0) - (a.votesCount || 0))
+      .slice(0, first);
+  }
+
+  const query = `
+    query TopByVotes($first: Int!) {
+      posts(order: VOTES, first: $first) {
+        edges {
+          node {
+            id
+            name
+            tagline
+            description
+            url
+            website
+            votesCount
+            commentsCount
+            thumbnail { url }
+            postedAt
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const resp = await fetch('https://api.producthunt.com/v2/api/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ query, variables: { first } }),
+    });
+    if (!resp.ok) {
+      return [...MOCK_POSTS]
+        .sort((a, b) => (b.votesCount || 0) - (a.votesCount || 0))
+        .slice(0, first);
+    }
+    const json = (await resp.json()) as any;
+    const edges = json?.data?.posts?.edges ?? [];
+    const posts: PHPost[] = edges.map((e: any) => ({
+      id: e.node.id,
+      name: e.node.name,
+      tagline: e.node.tagline,
+      description: e.node.description,
+      url: e.node.url,
+      website: e.node.website,
+      votesCount: e.node.votesCount,
+      commentsCount: e.node.commentsCount,
+      thumbnail: e.node.thumbnail?.url,
+      postedAt: e.node.postedAt,
+    }));
+    return posts;
+  } catch {
+    return [...MOCK_POSTS]
+      .sort((a, b) => (b.votesCount || 0) - (a.votesCount || 0))
+      .slice(0, first);
+  }
+}
+
 export interface AlgoliaHit {
   objectID: string;
   name: string;
