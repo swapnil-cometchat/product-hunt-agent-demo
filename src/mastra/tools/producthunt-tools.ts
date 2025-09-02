@@ -1,26 +1,11 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
-import { getTopProductsByDay, searchProducts } from '../../services/producthunt.js';
-
-function todayIST(): string {
-  try {
-    return new Intl.DateTimeFormat('en-CA', {
-      timeZone: 'Asia/Kolkata',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    }).format(new Date());
-  } catch {
-    return new Date().toISOString().slice(0, 10);
-  }
-}
+import { getTopProductsByVotes, searchProducts } from '../../services/producthunt.js';
 
 export const topProductsTool = createTool({
   id: 'get-top-products',
-  description: 'Get top 3 Product Hunt posts for a given day (YYYY-MM-DD). If omitted, defaults to today in IST (Asia/Kolkata).',
-  inputSchema: z.object({
-    date: z.string().describe('Day in YYYY-MM-DD format').optional(),
-  }),
+  description: 'Get the top 3 Product Hunt posts by total votes (all-time).',
+  inputSchema: z.object({}),
   outputSchema: z.object({
     posts: z
       .array(
@@ -36,9 +21,8 @@ export const topProductsTool = createTool({
       )
       .describe('Top 3 posts'),
   }),
-  execute: async ({ context }) => {
-    const date = context.date || todayIST();
-    const posts = await getTopProductsByDay(date);
+  execute: async () => {
+    const posts = await getTopProductsByVotes(3);
     return {
       posts: posts.map((p: any) => ({
         id: p.id,
