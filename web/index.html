@@ -38,13 +38,20 @@
       /* Layout */
       .main { padding: 18px 0 32px; }
       .grid { display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start; }
+      .subnav { position: sticky; top: 58px; z-index: 15; background: rgba(247,247,248,0.7); backdrop-filter: saturate(180%) blur(8px); border-bottom: 1px solid var(--border); }
+      .subnav-inner { display: flex; align-items: center; gap: 8px; padding: 10px 0; }
+      .pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border); background: #fff; font-size: 13px; color: var(--text); cursor: pointer; }
+      .pill.active { background: #fff4f0; border-color: #f6c1b1; color: var(--ph-orange); font-weight: 600; }
 
       /* Feed */
       .section-title { display: flex; align-items: baseline; gap: 10px; margin: 8px 0 14px; }
       .section-title h2 { margin: 0; font-size: 18px; }
       .section-title .date { color: var(--muted); font-size: 13px; }
       .feed { display: flex; flex-direction: column; gap: 10px; }
+      .featured { display: grid; grid-template-columns: 72px 1fr auto; gap: 14px; align-items: center; background: linear-gradient(0deg,#fff, #fff), #fff; border: 1px solid var(--border); border-radius: 14px; padding: 14px; box-shadow: 0 2px 0 rgba(0,0,0,0.02); }
+      .badge { display:inline-flex; align-items:center; gap:6px; font-size:12px; padding:4px 8px; border-radius:999px; background:#fff4f0; color:var(--ph-orange); border:1px solid #f6c1b1; font-weight:600; }
       .card { display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+      .rank { width: 56px; height: 56px; display: grid; place-items: center; border: 1px dashed var(--border); border-radius: 12px; color: var(--muted); font-weight: 700; }
       .vote { display: grid; place-items: center; width: 56px; height: 56px; border: 1px solid var(--border); border-radius: 12px; cursor: pointer; user-select: none; }
       .vote .count { font-weight: 700; }
       .thumb { width: 56px; height: 56px; border-radius: 12px; background: #f0f2f4; display: grid; place-items: center; font-weight: 700; color: var(--muted); }
@@ -171,8 +178,7 @@
         defaultChatID: '36735525-0266-4405-96c1-509afa10c334',
         variantID: '68b5727f5b631d82aa900be4',
         aiAssistantTools: {
-          'show-confetti': handleConfetti,
-          'confetti-tool': handleConfetti,
+          'show-confetti': handleConfetti
         },
       };
 
@@ -219,6 +225,22 @@
       </div>
     </header>
 
+    <!-- Subnav (timeframe / filters) -->
+    <div class="subnav">
+      <div class="container subnav-inner">
+        <span class="pill active">Today</span>
+        <span class="pill">Yesterday</span>
+        <span class="pill">This Week</span>
+        <span class="pill">This Month</span>
+        <span class="pill">Year</span>
+        <span style="flex:1"></span>
+        <span class="pill">All</span>
+        <span class="pill">AI</span>
+        <span class="pill">Developer Tools</span>
+        <span class="pill">Productivity</span>
+      </div>
+    </div>
+
     <!-- Main -->
     <main class="main container">
       <div class="grid">
@@ -229,56 +251,47 @@
             <span class="date">Static snapshot</span>
           </div>
           <div class="feed">
-            <!-- Card 1 -->
-            <article class="card">
-              <div class="vote" aria-label="Upvote">
-                <div class="count">312</div>
-              </div>
+            <!-- Featured: Product of the Day -->
+            <article class="featured">
+              <div class="vote" aria-label="Upvote"><div class="count">1</div></div>
               <div class="meta">
-                <div class="title">LaunchPad — Simple launch checklists</div>
-                <div class="tagline">Organize your Product Hunt launch in minutes.</div>
+                <div class="badge">Product of the day</div>
+                <div class="title" style="margin-top:6px">CometChat</div>
+                <div class="tagline">In-app chat, voice & video for web and mobile.</div>
                 <div class="meta-row">
-                  <span class="tag">Productivity</span>
-                  <span class="tag">Marketing</span>
-                  <div class="links">
-                    <a href="#">Visit</a>
-                    <a href="#">42 comments</a>
-                  </div>
+                  <span class="tag">Communication</span>
+                  <span class="tag">SDK</span>
+                  <div class="links"><a href="https://www.cometchat.com" target="_blank" rel="noopener">Visit</a></div>
                 </div>
               </div>
-              <div class="thumb">LP</div>
+              <div class="thumb">CC</div>
             </article>
-
-            <!-- Card 2 -->
+            <!-- Card 2: Dummy -->
             <article class="card">
-              <div class="vote" aria-label="Upvote">
-                <div class="count">254</div>
-              </div>
+              <div class="rank">#2</div>
               <div class="meta">
-                <div class="title">PixelSnapper</div>
-                <div class="tagline">Measure anything on your screen precisely.</div>
+                <div class="title">DemoApp One</div>
+                <div class="tagline">Placeholder app for design testing.</div>
                 <div class="meta-row">
-                  <span class="tag">Design</span>
-                  <span class="tag">Mac</span>
+                  <span class="tag">Demo</span>
+                  <span class="tag">UI</span>
                   <div class="links">
                     <a href="#">Visit</a>
                     <a href="#">28 comments</a>
                   </div>
                 </div>
               </div>
-              <div class="thumb">PS</div>
+              <div class="thumb">DA</div>
             </article>
 
-            <!-- Card 3 -->
+            <!-- Card 3: Dummy -->
             <article class="card">
-              <div class="vote" aria-label="Upvote">
-                <div class="count">221</div>
-              </div>
+              <div class="rank">#3</div>
               <div class="meta">
-                <div class="title">FocusFlow</div>
-                <div class="tagline">Pomodoro sessions that adapt to you.</div>
+                <div class="title">SampleFocus</div>
+                <div class="tagline">Example timer concept.</div>
                 <div class="meta-row">
-                  <span class="tag">AI</span>
+                  <span class="tag">Demo</span>
                   <span class="tag">Productivity</span>
                   <div class="links">
                     <a href="#">Visit</a>
@@ -286,39 +299,35 @@
                   </div>
                 </div>
               </div>
-              <div class="thumb">FF</div>
+              <div class="thumb">SF</div>
             </article>
 
-            <!-- Card 4 -->
+            <!-- Card 4: Dummy -->
             <article class="card">
-              <div class="vote" aria-label="Upvote">
-                <div class="count">198</div>
-              </div>
+              <div class="rank">#4</div>
               <div class="meta">
-                <div class="title">InboxZero</div>
-                <div class="tagline">Clear your inbox with one click.</div>
+                <div class="title">MockInbox</div>
+                <div class="tagline">Example email cleaner concept.</div>
                 <div class="meta-row">
+                  <span class="tag">Demo</span>
                   <span class="tag">Email</span>
-                  <span class="tag">Automation</span>
                   <div class="links">
                     <a href="#">Visit</a>
                     <a href="#">19 comments</a>
                   </div>
                 </div>
               </div>
-              <div class="thumb">IZ</div>
+              <div class="thumb">MI</div>
             </article>
 
-            <!-- Card 5 -->
+            <!-- Card 5: Dummy -->
             <article class="card">
-              <div class="vote" aria-label="Upvote">
-                <div class="count">176</div>
-              </div>
+              <div class="rank">#5</div>
               <div class="meta">
-                <div class="title">SnapDocs</div>
-                <div class="tagline">Convert screenshots into editable docs.</div>
+                <div class="title">DocuPlaceholder</div>
+                <div class="tagline">Example document helper concept.</div>
                 <div class="meta-row">
-                  <span class="tag">Developer Tools</span>
+                  <span class="tag">Demo</span>
                   <span class="tag">Docs</span>
                   <div class="links">
                     <a href="#">Visit</a>
@@ -326,39 +335,35 @@
                   </div>
                 </div>
               </div>
-              <div class="thumb">SD</div>
+              <div class="thumb">DP</div>
             </article>
 
-            <!-- Card 6 -->
+            <!-- Card 6: Dummy -->
             <article class="card">
-              <div class="vote" aria-label="Upvote">
-                <div class="count">159</div>
-              </div>
+              <div class="rank">#6</div>
               <div class="meta">
-                <div class="title">TrailMix</div>
-                <div class="tagline">Plan outdoor trips with AI routes.</div>
+                <div class="title">TripMock</div>
+                <div class="tagline">Example trip planning concept.</div>
                 <div class="meta-row">
+                  <span class="tag">Demo</span>
                   <span class="tag">Travel</span>
-                  <span class="tag">Maps</span>
                   <div class="links">
                     <a href="#">Visit</a>
                     <a href="#">14 comments</a>
                   </div>
                 </div>
               </div>
-              <div class="thumb">TM</div>
+              <div class="thumb">TR</div>
             </article>
 
-            <!-- Card 7 -->
+            <!-- Card 7: Dummy -->
             <article class="card">
-              <div class="vote" aria-label="Upvote">
-                <div class="count">142</div>
-              </div>
+              <div class="rank">#7</div>
               <div class="meta">
-                <div class="title">TinyPages</div>
-                <div class="tagline">Build landing pages in under 5 minutes.</div>
+                <div class="title">TinyPlaceholder</div>
+                <div class="tagline">Example landing page concept.</div>
                 <div class="meta-row">
-                  <span class="tag">No-Code</span>
+                  <span class="tag">Demo</span>
                   <span class="tag">Web</span>
                   <div class="links">
                     <a href="#">Visit</a>
@@ -366,19 +371,17 @@
                   </div>
                 </div>
               </div>
-              <div class="thumb">TP</div>
+              <div class="thumb">TL</div>
             </article>
 
-            <!-- Card 8 -->
+            <!-- Card 8: Dummy -->
             <article class="card">
-              <div class="vote" aria-label="Upvote">
-                <div class="count">133</div>
-              </div>
+              <div class="rank">#8</div>
               <div class="meta">
-                <div class="title">PromptShelf</div>
-                <div class="tagline">Curated prompts for your daily tasks.</div>
+                <div class="title">PromptPlaceholder</div>
+                <div class="tagline">Example prompt collection concept.</div>
                 <div class="meta-row">
-                  <span class="tag">AI</span>
+                  <span class="tag">Demo</span>
                   <span class="tag">Tools</span>
                   <div class="links">
                     <a href="#">Visit</a>
@@ -386,7 +389,7 @@
                   </div>
                 </div>
               </div>
-              <div class="thumb">PR</div>
+              <div class="thumb">PP</div>
             </article>
           </div>
         </section>
