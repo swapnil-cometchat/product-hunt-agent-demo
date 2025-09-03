@@ -18,9 +18,17 @@ export const topProductsTool = createTool({
         }),
       )
       .describe('Top 3 posts'),
+    table: z.string().describe('Markdown table of top posts'),
   }),
   execute: async () => {
     const posts = await getTopProductsByVotes(3);
+    const toCell = (v: any) => (v == null ? '-' : String(v).replace(/\|/g, '\\|'));
+    const rows = posts.map((p: any, i: number) => `| ${i + 1} | ${toCell(p.name)} | ${toCell(p.tagline)} | ${toCell(p.votesCount)} | ${p.url ? `[link](${p.url})` : '-'} |`);
+    const table = [
+      '| Rank | Name | Tagline | Votes | Link |',
+      '| ---: | --- | --- | ---: | --- |',
+      ...rows,
+    ].join('\n');
     return {
       posts: posts.map((p: any) => ({
         id: p.id,
@@ -29,6 +37,7 @@ export const topProductsTool = createTool({
         url: p.url,
         votesCount: p.votesCount,
       })),
+      table,
     };
   },
 });
@@ -110,6 +119,7 @@ export const topProductsByTimeframeTool = createTool({
     timeframe: z.string(),
     tz: z.string(),
     window: z.object({ postedAfter: z.string(), postedBefore: z.string() }).optional(),
+    table: z.string().describe('Markdown table of top posts for timeframe'),
   }),
   execute: async ({ context }) => {
     const timeframe = (context?.timeframe || 'today').toString();
@@ -117,6 +127,13 @@ export const topProductsByTimeframeTool = createTool({
     const limit = Math.max(1, Math.min(10, Number(context?.limit ?? 3)));
     const window = parseTimeframe(timeframe, tz);
     const posts = await getTopProductsByTimeframe({ first: limit, timeframe, tz });
+    const toCell = (v: any) => (v == null ? '-' : String(v).replace(/\|/g, '\\|'));
+    const rows = posts.map((p: any, i: number) => `| ${i + 1} | ${toCell(p.name)} | ${toCell(p.tagline)} | ${toCell(p.votesCount)} | ${p.url ? `[link](${p.url})` : '-'} |`);
+    const table = [
+      '| Rank | Name | Tagline | Votes | Link |',
+      '| ---: | --- | --- | ---: | --- |',
+      ...rows,
+    ].join('\n');
     return {
       posts: posts.map((p: any) => ({
         id: p.id,
@@ -128,6 +145,7 @@ export const topProductsByTimeframeTool = createTool({
       timeframe,
       tz,
       window: { postedAfter: window.postedAfter, postedBefore: window.postedBefore },
+      table,
     };
   },
 });
