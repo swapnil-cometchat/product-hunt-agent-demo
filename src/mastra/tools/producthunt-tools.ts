@@ -23,12 +23,7 @@ export const topProductsTool = createTool({
   execute: async () => {
     const posts = await getTopProductsByVotes(3);
     const toCell = (v: any) => (v == null ? '-' : String(v).replace(/\|/g, '\\|'));
-    const toLink = (u?: string) => {
-      if (!u) return '-';
-      const safe = String(u).replace(/"/g, '&quot;');
-      return `<a href="${safe}" target="_blank" rel="noopener">link</a>`;
-    };
-    const rows = posts.map((p: any, i: number) => `| ${i + 1} | ${toCell(p.name)} | ${toCell(p.tagline)} | ${toCell(p.votesCount)} | ${toLink(p.url)} |`);
+    const rows = posts.map((p: any, i: number) => `| ${i + 1} | ${toCell(p.name)} | ${toCell(p.tagline)} | ${toCell(p.votesCount)} | ${p.url ? `[link](${p.url})` : '-'} |`);
     const table = [
       '| Rank | Name | Tagline | Votes | Link |',
       '| ---: | --- | --- | ---: | --- |',
@@ -132,12 +127,7 @@ export const topProductsByTimeframeTool = createTool({
     const window = parseTimeframe(timeframe, tz);
     const posts = await getTopProductsByTimeframe({ first: limit, timeframe, tz });
     const toCell = (v: any) => (v == null ? '-' : String(v).replace(/\|/g, '\\|'));
-    const toLink = (u?: string) => {
-      if (!u) return '-';
-      const safe = String(u).replace(/"/g, '&quot;');
-      return `<a href="${safe}" target="_blank" rel="noopener">link</a>`;
-    };
-    const rows = posts.map((p: any, i: number) => `| ${i + 1} | ${toCell(p.name)} | ${toCell(p.tagline)} | ${toCell(p.votesCount)} | ${toLink(p.url)} |`);
+    const rows = posts.map((p: any, i: number) => `| ${i + 1} | ${toCell(p.name)} | ${toCell(p.tagline)} | ${toCell(p.votesCount)} | ${p.url ? `[link](${p.url})` : '-'} |`);
     const table = [
       '| Rank | Name | Tagline | Votes | Link |',
       '| ---: | --- | --- | ---: | --- |',
