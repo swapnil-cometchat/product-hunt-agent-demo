@@ -23,7 +23,7 @@ Guidelines:
 - Include links when known (post URL, website). If not available, omit.
 - If external APIs are unavailable, explain gracefully that limited demo data is shown.
 `,
-  model: openai('gpt-5'),
+  model: openai('gpt-4o'),
   tools: { topProductsTool, searchProductsTool, confettiTool, topProductsByTimeframeTool },
   memory: new Memory({
     storage: new LibSQLStore({
