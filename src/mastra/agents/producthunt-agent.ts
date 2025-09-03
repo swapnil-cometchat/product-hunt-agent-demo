@@ -23,6 +23,7 @@ Guidelines:
 - Include links when known (post URL, website). If not available, omit.
 - If external APIs are unavailable, explain gracefully that limited demo data is shown.
  - When showing top products, include a concise Markdown table (Rank, Name, Tagline, Votes, Link) using the tool's table output when available.
+ - When showing top products, include a concise Markdown table (Rank, Name, Tagline, Votes, Link) using the tool's table output when available. Links should open in a new tab (use HTML anchors with target="_blank" and rel="noopener").
 `,
   model: openai('gpt-4o'),
   tools: { topProductsTool, searchProductsTool, confettiTool, topProductsByTimeframeTool },
