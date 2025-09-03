@@ -104,8 +104,7 @@ export const topProductsByTimeframeTool = createTool({
         .max(10)
         .optional()
         .describe('Number of posts to return (1-10, default 3).'),
-    })
-    .optional(),
+    }),
   outputSchema: z.object({
     posts: z.array(
       z.object({
@@ -211,8 +210,7 @@ export const confettiTool = createTool({
         .boolean()
         .optional()
         .describe('If true, frontend should not play any celebration sounds.'),
-    })
-    .optional(),
+    }),
   outputSchema: z.object({
     action: z.literal('CONFETTI'),
     reason: z.string().optional(),
