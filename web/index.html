@@ -101,9 +101,9 @@
     <script>
       // --- CometChat Credentials ---
       const COMETCHAT_CREDENTIALS = {
-        appID: "280833fdbfc2ef3b",
-        appRegion: "us",
-        authKey: "9762f51fb296e579cb4a268099e40c2bcde5c4ae",
+        appID: "28199255746b91be",
+        appRegion: "in",
+        authKey: "38bebf7993271723d05f3169bc295b0e7e5b6ef4",
       };
 
       // --- Tool Handlers ---
@@ -178,12 +178,12 @@
       // --- CometChat Launch Options ---
       const COMETCHAT_LAUNCH_OPTIONS = {
         targetElementID: 'cometChatMount',  // Element ID to mount the widget
-        isDocked: true, // floating bubble
-        width: '350px',
-        height: '550px',
-        chatType: 'user',
-        defaultChatID: '36735525-0266-4405-96c1-509afa10c334',
-        variantID: '68b5727f5b631d82aa900be4',
+        isDocked: true, // true = floating bubble, false = embedded
+        width: '350px', // Widget width
+        height: '550px',  // Widget height
+        chatType: "user",
+        defaultChatID: "c7d00bd7-0d43-485e-bc05-4c6c6c52e645",  // Agent ID to open chat by default
+        variantID: "68c65fee227251147a0e4933",  // Variant configuration ID
         aiAssistantTools: { 
           // Support both naming conventions
           'confettiTool': handleConfetti,
