@@ -62,8 +62,7 @@
         position: sticky;
         top: 0;
         z-index: 30;
-        background: rgba(246, 247, 249, 0.96);
-        backdrop-filter: blur(18px);
+        background: var(--card);
         border-bottom: 1px solid var(--border);
       }
 
@@ -72,7 +71,7 @@
         grid-template-columns: auto 1fr auto;
         align-items: center;
         gap: 16px;
-        padding: 14px 0;
+        padding: 10px 0;
       }
 
       .brand {
@@ -99,14 +98,15 @@
       }
 
       .search {
+        flex: 1;
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 10px 14px;
+        padding: 10px 12px;
         border: 1px solid var(--border);
         border-radius: 999px;
         color: var(--muted);
-        min-width: 280px;
+        max-width: 460px;
       }
 
       .search input {
@@ -119,7 +119,6 @@
 
       .nav {
         display: flex;
-        align-items: center;
         gap: 18px;
         margin-left: 16px;
         color: var(--muted);
