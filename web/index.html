@@ -365,6 +365,37 @@
         transform: translateY(0);
       }
 
+      .listing-overlay {
+        position: fixed;
+        inset: 0;
+        background: #f6f7f9;
+        z-index: 500;
+        display: none;
+      }
+      .listing-overlay.visible {
+        display: block;
+      }
+      .listing-overlay iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        background: #fff;
+      }
+      .listing-overlay button[data-close-listing] {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        z-index: 10;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
       /* Footer */
       .footer {
         color: #798391;
@@ -390,7 +421,10 @@
       defer
       src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"
     ></script> -->
-    <script defer src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.0.9/dist/main.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.0.9/dist/main.js"
+    ></script>
     <script>
       // Base URL for our Product Hunt Agent API
       window.PH_AGENT_API =
@@ -529,22 +563,24 @@
           url: "./cometchat-listing.html",
         };
         const cfg = { ...defaults, ...normalizeArgs(args) };
-
-        try {
-          if (typeof cfg.url === "string" && cfg.url.length > 0) {
-            window.location.assign(cfg.url);
-          } else {
-            console.warn(
-              "[ListingTool] Invalid URL provided, skipping redirect.",
-            );
-            return { ok: false, error: "invalid-url" };
-          }
-        } catch (error) {
-          console.error("[ListingTool] Failed to navigate", error);
-          return { ok: false, error: String(error) };
+        const overlay = document.getElementById("listingOverlay");
+        const frame = document.getElementById("listingFrame");
+        if (
+          overlay instanceof HTMLElement &&
+          frame instanceof HTMLIFrameElement &&
+          typeof cfg.url === "string" &&
+          cfg.url.length > 0
+        ) {
+          frame.src = cfg.url;
+          overlay.classList.add("visible");
+          overlay.scrollIntoView({ behavior: "smooth", block: "start" });
+          return { ok: true, url: cfg.url, mode: "overlay" };
         }
-
-        return { ok: true, url: cfg.url };
+        console.warn(
+          "[ListingTool] Overlay unavailable, falling back to navigation.",
+        );
+        window.location.assign(cfg.url);
+        return { ok: true, url: cfg.url, mode: "redirect" };
       }
 
       // --- CometChat Launch Options ---
@@ -572,6 +608,20 @@
       const COMETCHAT_USER_UID = "cometchat-uid-2";
 
       window.addEventListener("DOMContentLoaded", () => {
+        const overlay = document.getElementById("listingOverlay");
+        const frame = document.getElementById("listingFrame");
+        const closeBtn = document.querySelector("[data-close-listing]");
+        if (
+          overlay instanceof HTMLElement &&
+          frame instanceof HTMLIFrameElement &&
+          closeBtn instanceof HTMLElement
+        ) {
+          closeBtn.addEventListener("click", () => {
+            overlay.classList.remove("visible");
+            frame.src = "about:blank";
+          });
+        }
+
         if (!window.CometChatApp) {
           console.error("[CometChat] Embed script not loaded");
           return;
@@ -913,6 +963,15 @@
     </main>
     <!-- CometChat mount point (for docked widget this can be empty) -->
     <div id="cometChatMount"></div>
+    <div id="listingOverlay" class="listing-overlay">
+      <button type="button" data-close-listing>← Back to launches</button>
+      <iframe
+        id="listingFrame"
+        title="CometChat Product Hunt Listing"
+        src="about:blank"
+        allow="fullscreen"
+      ></iframe>
+    </div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
     <script>
