@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AI Agent Platform by CometChat — Product Hunt Listing</title>
+    <title>AI Agent Platform by CometChat | Product Hunt Mock</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,11 +15,13 @@
         --bg: #f6f7f9;
         --card: #ffffff;
         --border: #e5e8eb;
+        --border-strong: #d0d7de;
         --text: #1f2328;
         --muted: #586069;
-        --accent: #ff5c36;
-        --accent-soft: rgba(255, 92, 54, 0.08);
-        --accent-border: rgba(255, 92, 54, 0.25);
+        --accent: #ff6154;
+        --accent-soft: rgba(255, 97, 84, 0.1);
+        --badge-bg: #f5f4ff;
+        --badge-text: #5b4de2;
       }
 
       * {
@@ -36,6 +38,7 @@
           sans-serif;
         background: var(--bg);
         color: var(--text);
+        -webkit-font-smoothing: antialiased;
       }
 
       a {
@@ -43,327 +46,413 @@
         text-decoration: none;
       }
 
-      header {
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      header.ph-header {
         position: sticky;
         top: 0;
         z-index: 30;
-        backdrop-filter: blur(16px);
-        background: rgba(246, 247, 249, 0.92);
+        backdrop-filter: blur(18px);
+        background: rgba(246, 247, 249, 0.9);
         border-bottom: 1px solid var(--border);
       }
 
-      .topbar {
-        max-width: 1100px;
+      .ph-header .bar {
+        max-width: 1200px;
         margin: 0 auto;
-        display: flex;
+        padding: 14px 24px;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 18px;
         align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 14px 20px;
       }
 
-      .crumbs {
-        font-size: 13px;
+      .ph-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .ph-logo .pill {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+      }
+
+      .ph-search {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 999px;
         color: var(--muted);
+        min-width: 280px;
+      }
+
+      .ph-search input {
+        border: 0;
+        outline: none;
+        flex: 1;
+        font: inherit;
+        color: var(--text);
+      }
+
+      nav.ph-nav {
         display: flex;
-        gap: 8px;
+        align-items: center;
+        gap: 18px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .ph-actions {
+        display: flex;
+        gap: 12px;
         align-items: center;
       }
 
-      .crumbs span:last-child {
-        color: var(--text);
-        font-weight: 600;
-      }
-
-      .back-link {
+      .btn {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
+        justify-content: center;
+        padding: 8px 16px;
         border-radius: 999px;
         border: 1px solid var(--border);
-        background: var(--card);
-        font-size: 13px;
+        background: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 14px;
       }
 
-      main {
-        max-width: 1100px;
+      .btn.primary {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: #fff;
+      }
+
+      main.page {
+        max-width: 1200px;
         margin: 24px auto 80px;
-        padding: 0 20px;
+        padding: 0 24px;
         display: grid;
-        grid-template-columns: minmax(0, 680px) minmax(280px, 1fr);
-        gap: 28px;
+        grid-template-columns: minmax(0, 780px) 320px;
+        gap: 32px;
         align-items: start;
       }
 
-      section {
+      .card {
         background: var(--card);
         border: 1px solid var(--border);
         border-radius: 16px;
         padding: 24px;
       }
 
-      .hero {
+      .hero-card {
         display: grid;
         grid-template-columns: auto 1fr auto;
         gap: 20px;
         align-items: center;
-        margin-bottom: 24px;
       }
 
-      .logo {
-        width: 72px;
-        height: 72px;
+      .hero-logo {
+        width: 80px;
+        height: 80px;
+        border-radius: 24px;
+        background: #0f141a;
         display: grid;
         place-items: center;
-        border-radius: 20px;
-        background: #111;
         overflow: hidden;
       }
 
-      .logo img {
-        width: 100%;
-        height: 100%;
-        display: block;
-        object-fit: cover;
-      }
-
-      .hero h1 {
+      .hero-meta h1 {
         margin: 0;
         font-size: 28px;
       }
 
-      .hero p {
+      .hero-meta p {
         margin: 8px 0 0;
         color: var(--muted);
       }
 
-      .hero-actions {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        align-items: flex-end;
-      }
-
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background: var(--accent-soft);
-        border: 1px solid var(--accent-border);
-        color: var(--accent);
-        border-radius: 999px;
-        padding: 6px 12px;
-        font-size: 12px;
-        font-weight: 600;
-      }
-
-      .actions {
-        display: flex;
-        gap: 8px;
-      }
-
-      .btn {
-        border-radius: 999px;
-        border: 1px solid var(--border);
-        background: var(--card);
-        padding: 10px 16px;
-        font-weight: 600;
-        font-size: 14px;
-        cursor: pointer;
-      }
-
-      .btn.primary {
-        background: var(--accent);
-        border-color: var(--accent);
-        color: #fff;
-      }
-
-      h2 {
-        margin: 0 0 12px;
-        font-size: 20px;
-      }
-
-      .meta-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 12px;
-        margin-top: 16px;
-      }
-
-      .meta-card {
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 14px;
-      }
-
-      .meta-card strong {
-        display: block;
-        font-size: 22px;
-        margin-bottom: 4px;
-      }
-
-      .meta-card span {
-        font-size: 13px;
-        color: var(--muted);
-      }
-
-      .section-title {
-        font-size: 16px;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-        font-weight: 600;
-        margin-bottom: 6px;
-      }
-
-      .pill-list {
+      .hero-meta .tags {
+        margin-top: 12px;
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-      }
-
-      .pill {
-        padding: 8px 12px;
-        border-radius: 999px;
-        background: #f0f2f5;
-        font-size: 13px;
-        color: #3b4350;
-      }
-
-      .feature-grid {
-        display: grid;
-        gap: 18px;
-      }
-
-      .feature {
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 18px;
-      }
-
-      .feature h3 {
-        margin: 0 0 8px;
-        font-size: 17px;
-      }
-
-      .timeline {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        display: grid;
-        gap: 16px;
-      }
-
-      .timeline li {
-        display: grid;
-        grid-template-columns: 110px 1fr;
-        gap: 16px;
-        align-items: flex-start;
-      }
-
-      .timeline time {
-        font-weight: 600;
         color: var(--muted);
         font-size: 13px;
       }
 
-      .timeline p {
-        margin: 0;
+      .hero-meta .tags span::before {
+        content: "•";
+        margin-right: 6px;
+        color: #c4c9d1;
       }
 
-      .card-stack {
+      .hero-actions {
         display: grid;
-        gap: 14px;
+        justify-items: end;
+        gap: 10px;
       }
 
-      .callout {
-        border-left: 4px solid var(--accent);
-        padding: 12px 16px;
-        background: rgba(255, 92, 54, 0.06);
+      .hero-actions .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--badge-bg);
+        color: var(--badge-text);
+        font-size: 13px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+
+      .toolbar {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-top: 20px;
+      }
+
+      .toolbar .pill {
+        padding: 10px 16px;
+        border: 1px solid var(--border);
         border-radius: 12px;
-        color: #6f3a2a;
         font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
       }
 
-      aside {
+      .gallery-card {
+        margin-top: 20px;
+        padding: 24px 24px 16px;
         display: grid;
         gap: 20px;
       }
 
-      .side-card {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 20px;
-      }
-
-      .side-card h3 {
-        margin: 0 0 12px;
-        font-size: 17px;
-      }
-
-      .stat-list {
+      .gallery {
         display: grid;
-        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
       }
 
-      .stat {
+      .gallery img {
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+      }
+
+      .subnav {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        font-weight: 600;
         font-size: 14px;
       }
 
-      .stat strong {
+      .overview-card h2,
+      .maker-card h2,
+      .poll-card h3,
+      .reviews-card h2 {
+        margin: 0 0 16px;
         font-size: 20px;
       }
 
-      .link-list {
-        display: grid;
-        gap: 8px;
-        font-size: 14px;
+      .overview-card p {
+        margin: 0 0 12px;
+        line-height: 1.55;
+        color: var(--muted);
       }
 
-      .team-list {
-        display: grid;
-        gap: 12px;
+      .overview-card ul {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--muted);
       }
 
-      .team-member {
+      .overview-card li {
+        margin-bottom: 8px;
+      }
+
+      .maker-card {
+        display: grid;
+        gap: 18px;
+      }
+
+      .maker-header {
         display: grid;
         grid-template-columns: auto 1fr;
         gap: 12px;
         align-items: center;
       }
 
-      .avatar {
+      .maker-avatar {
         width: 44px;
         height: 44px;
-        border-radius: 12px;
-        background: #1f2933;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #1e293b, #111827);
         color: #fff;
         display: grid;
         place-items: center;
         font-weight: 700;
       }
 
-      @media (max-width: 960px) {
-        main {
+      .maker-meta {
+        display: grid;
+        gap: 4px;
+      }
+
+      .maker-meta span {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .maker-body p {
+        margin: 0 0 12px;
+        line-height: 1.6;
+        color: var(--text);
+      }
+
+      .maker-body ul {
+        margin: 0 0 12px;
+        padding-left: 20px;
+      }
+
+      .poll-card {
+        display: grid;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .poll-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .poll-actions button {
+        padding: 10px 16px;
+        border-radius: 999px;
+        border: 1px solid var(--border-strong);
+        background: #fff;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .reviews-card {
+        display: grid;
+        gap: 16px;
+      }
+
+      .reviews-card .empty {
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      aside.sidebar {
+        display: grid;
+        gap: 20px;
+      }
+
+      .sidebar .panel {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        display: grid;
+        gap: 16px;
+      }
+
+      .sidebar .follow-actions {
+        display: grid;
+        gap: 10px;
+      }
+
+      .stats-list,
+      .links,
+      .similar-list {
+        display: grid;
+        gap: 12px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      .similar-item {
+        display: grid;
+        gap: 6px;
+      }
+
+      .similar-item strong {
+        color: var(--text);
+      }
+
+      .sponsor-card {
+        margin-top: 20px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .sponsor-card small {
+        text-transform: uppercase;
+        font-weight: 600;
+        color: #b48b20;
+      }
+
+      .meta-toolbar {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      @media (max-width: 1040px) {
+        main.page {
           grid-template-columns: 1fr;
         }
-
-        .hero {
-          grid-template-columns: auto 1fr;
+        aside.sidebar {
+          grid-row: 1;
         }
+      }
 
+      @media (max-width: 780px) {
+        .ph-header .bar {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        .ph-actions {
+          justify-content: flex-end;
+        }
+        main.page {
+          padding: 0 16px;
+        }
+        .hero-card {
+          grid-template-columns: 1fr;
+          justify-items: start;
+        }
         .hero-actions {
-          align-items: flex-start;
-          grid-column: 1 / -1;
+          justify-items: start;
         }
       }
     </style>
-    <!-- CometChat Visual Builder (No-Code) -->
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"
@@ -556,389 +645,330 @@
     </script>
   </head>
   <body>
-    <header>
-      <div class="topbar">
-        <div class="crumbs">
-          <a class="back-link" href="./index.html">⬅ Back to launches</a>
-          <span>/</span>
-          <span>Products</span>
-          <span>/</span>
-          <span>AI Agent Platform by CometChat</span>
+    <header class="ph-header">
+      <div class="bar">
+        <div class="ph-logo">
+          <span class="pill">P</span>
+          <div class="ph-search">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input placeholder="Search (⌘ + k)" />
+          </div>
         </div>
-        <a
-          class="btn"
-          href="https://www.cometchat.com/full-stack-agent-platform?ref=producthunt"
-          target="_blank"
-          rel="noopener"
-          >Visit product site</a
-        >
+        <nav class="ph-nav">
+          <a href="#">Launches ▾</a>
+          <a href="#">Products ▾</a>
+          <a href="#">News ▾</a>
+          <a href="#">Forums ▾</a>
+          <a href="#">Advertise</a>
+        </nav>
+        <div class="ph-actions">
+          <button class="btn">Subscribe</button>
+          <a class="btn primary" href="#">Sign in</a>
+        </div>
       </div>
     </header>
 
-    <main>
-      <div>
-        <section>
-          <div class="hero">
-            <div class="logo">
-              <img src="./cometchat-logo.png" alt="CometChat logo" />
-            </div>
-            <div>
-              <h1>AI Agent Platform by CometChat</h1>
-              <p>AI Copilot for your website/app. Free for first 500 teams.</p>
-              <div class="pill-list" style="margin-top: 12px">
-                <span class="pill">AI Chatbots</span>
-                <span class="pill">AI Agents</span>
-                <span class="pill">No-Code AI Agent Builder</span>
-              </div>
-            </div>
-            <div class="hero-actions">
-              <span class="badge">Launch offer: free for first 500 teams</span>
-              <div class="actions">
-                <a
-                  class="btn primary"
-                  href="https://www.cometchat.com/ai-agent-free-offer"
-                  target="_blank"
-                  rel="noopener"
-                  >Claim free offer</a
-                >
-                <a
-                  class="btn"
-                  href="https://www.producthunt.com/products/full-stack-ai-agent-platform-cometchat"
-                  target="_blank"
-                  rel="noopener"
-                  >View on Product Hunt</a
-                >
-              </div>
+    <main class="page">
+      <section class="content">
+        <div class="card hero-card">
+          <div class="hero-logo">
+            <img src="./cometchat-logo.png" alt="CometChat logo" />
+          </div>
+          <div class="hero-meta">
+            <h1>AI Agent Platform by CometChat</h1>
+            <p>AI Copilot for your website/app. Free for first 500 teams.</p>
+            <div class="tags">
+              <span>AI Chatbots</span>
+              <span>AI Agents</span>
+              <span>No-Code AI Agent Builder</span>
             </div>
           </div>
-
-          <div class="meta-grid">
-            <div class="meta-card">
-              <strong>Oct 6, 2025</strong>
-              <span>Product Hunt launch date</span>
-            </div>
-            <div class="meta-card">
-              <strong>1</strong>
-              <span>Follower on launch day snapshot</span>
-            </div>
-            <div class="meta-card">
-              <strong>500 slots</strong>
-              <span>Free teams included in offer</span>
-            </div>
-            <div class="meta-card">
-              <strong>SOC 2+</strong>
-              <span>Enterprise compliance (SOC2, GDPR, HIPAA)</span>
-            </div>
-          </div>
-        </section>
-
-        <section style="margin-top: 20px">
-          <div class="section-title">Overview</div>
-          <h2>Launch production-ready copilots without rebuilding messaging</h2>
-          <p>
-            Get a user-facing AI agent or copilot—fully built, hosted, and
-            production-ready. CometChat handles the agent logic, UI, safety,
-            notifications, and analytics so you can go live in minutes instead
-            of months. The platform is designed to ship fast without
-            compromising scale, security, or compliance.
-          </p>
-          <div class="feature-grid" style="margin-top: 22px">
-            <div class="feature">
-              <h3>Done-for-you agent builds &amp; hosting</h3>
-              <p>
-                Agent Builder (private beta) helps teams create, host, and
-                deploy bespoke copilots end-to-end—CometChat’s specialists ship
-                the experience with you.
-              </p>
-            </div>
-            <div class="feature">
-              <h3>CometChat Agent Protocol</h3>
-              <p>
-                Advanced teams can bring their preferred builders or a custom
-                stack without glue code, plugging agents directly into
-                CometChat’s infrastructure.
-              </p>
-            </div>
-            <div class="feature">
-              <h3>Seamless user experiences</h3>
-              <p>
-                Agents collaborate inside existing chats with thinking states,
-                memory pills, and guided handoffs for intuitive front-end
-                copilots.
-              </p>
-            </div>
-            <div class="feature">
-              <h3>UI kits for every platform</h3>
-              <p>
-                React, Angular, Vue, iOS, Android, and Flutter kits ship out of
-                the box so teams can embed copilots wherever customers already
-                work.
-              </p>
-            </div>
-            <div class="feature">
-              <h3>Enterprise-grade compliance</h3>
-              <p>
-                SOC 2, GDPR, ISO 27001, and HIPAA support ensure regulated
-                industries can adopt AI agents with confidence.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section style="margin-top: 20px">
-          <div class="section-title">Out of the box</div>
-          <h2>Everything bundled with your AI agent</h2>
-          <div class="card-stack">
-            <div class="feature">
-              <h3>Production-ready chat UI</h3>
-              <p>
-                Thinking states, retries, and persistent memory pills arrive
-                built in so pilot users feel the polish of a mature product from
-                day one.
-              </p>
-            </div>
-            <div class="feature">
-              <h3>Guardrails &amp; moderation</h3>
-              <p>
-                A custom LLM-powered safety layer flags toxicity, PII,
-                jailbreaks, and prompt injections in realtime before they reach
-                your customers.
-              </p>
-            </div>
-            <div class="feature">
-              <h3>Lifecycle notifications</h3>
-              <p>
-                Push, email, and SMS notifications re-engage users
-                automatically—no extra tooling or integrations required.
-              </p>
-            </div>
-            <div class="feature">
-              <h3>Analytics &amp; insights</h3>
-              <p>
-                Success metrics surface instantly so product teams can iterate
-                without wiring up additional dashboards.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section style="margin-top: 20px">
-          <div class="section-title">Launch offer</div>
-          <h2>What the makers announced on Product Hunt</h2>
-          <ul class="timeline">
-            <li>
-              <time>Oct 6, 2025</time>
-              <div>
-                <h3 style="margin: 0 0 6px; font-size: 16px">
-                  Free for the first 500 teams
-                </h3>
-                <p>
-                  The full-stack AI agent platform is free through year-end for
-                  the first 500 teams that reserve a slot via the Product Hunt
-                  launch.
-                </p>
-              </div>
-            </li>
-            <li>
-              <time>Agent Builder</time>
-              <div>
-                <h3 style="margin: 0 0 6px; font-size: 16px">
-                  Private beta assistance
-                </h3>
-                <p>
-                  CometChat’s specialists co-build, host, and deploy agents
-                  end-to-end using the new Agent Builder so teams can ship
-                  faster.
-                </p>
-              </div>
-            </li>
-            <li>
-              <time>Launch day</time>
-              <div>
-                <h3 style="margin: 0 0 6px; font-size: 16px">
-                  Founder support
-                </h3>
-                <p>
-                  Founder &amp; CTO Anant Garg is active in the comments,
-                  swapping implementation tips and collecting launch-day
-                  feedback.
-                </p>
-              </div>
-            </li>
-          </ul>
-        </section>
-
-        <section style="margin-top: 20px">
-          <div class="section-title">Access</div>
-          <h2>Claim the Product Hunt launch offer</h2>
-          <div class="feature" style="display: grid; gap: 14px">
-            <div>
-              <strong>Launch offer</strong>
-              <p style="margin: 6px 0 0">
-                Completely free for the first 500 teams through the end of the
-                year when you reserve a spot via the Product Hunt promotion.
-              </p>
-            </div>
-            <div>
-              <strong>Guided onboarding</strong>
-              <p style="margin: 6px 0 0">
-                CometChat’s solution engineers co-build and host your agent
-                using the Agent Builder private beta, then hand over a
-                production-ready deployment.
-              </p>
-            </div>
-            <div>
-              <strong>Scale-up path</strong>
-              <p style="margin: 6px 0 0">
-                When the promo ends, teams graduate to tailored plans that keep
-                enterprise controls, compliance, and SLA coverage in place.
-              </p>
-            </div>
-          </div>
-          <div class="callout" style="margin-top: 16px">
-            Sign up at
-            <a
-              href="https://www.cometchat.com/ai-agent-free-offer"
-              target="_blank"
-              rel="noopener"
-              >cometchat.com/ai-agent-free-offer</a
-            >
-            to reserve your slot—availability is first come, first serve.
-          </div>
-        </section>
-
-        <section style="margin-top: 20px">
-          <div class="section-title">FAQ</div>
-          <h2>Common questions</h2>
-          <div class="card-stack">
-            <div class="feature">
-              <h3>What do I get as part of the free launch offer?</h3>
-              <p>
-                Full access to the AI Agent Platform, guided onboarding from
-                CometChat’s team, hosting, notifications, analytics, and the
-                production UI kit—all waived for the first 500 teams through
-                year-end.
-              </p>
-            </div>
-            <div class="feature">
-              <h3>Can we bring our existing agent stack?</h3>
-              <p>
-                Yes. The CometChat Agent Protocol lets advanced teams plug in
-                their preferred builders or custom tooling without bespoke
-                middleware.
-              </p>
-            </div>
-            <div class="feature">
-              <h3>Which platforms are supported?</h3>
-              <p>
-                UI kits ship for React, Angular, Vue, iOS, Android, and Flutter
-                so you can embed copilots everywhere your users already engage.
-              </p>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <aside>
-        <div class="side-card">
-          <h3>Launch facts</h3>
-          <div class="stat-list">
-            <div class="stat">
-              <span>Launch date</span>
-              <strong>Oct 6, 2025</strong>
-            </div>
-            <div class="stat">
-              <span>Offer slots</span>
-              <strong>500</strong>
-            </div>
-            <div class="stat">
-              <span>Listing categories</span>
-              <strong>3</strong>
-            </div>
-            <div class="stat">
-              <span>Followers (snapshot)</span>
-              <strong>1</strong>
-            </div>
+          <div class="hero-actions">
+            <span class="badge">🎁 First 500 get it free</span>
+            <button class="btn primary">Visit website</button>
+            <button class="btn">Follow</button>
           </div>
         </div>
 
-        <div class="side-card">
-          <h3>Quick links</h3>
-          <div class="link-list">
+        <div class="card gallery-card">
+          <div class="subnav">
+            <span>Overview</span>
+            <span>Launches</span>
+            <span>Reviews</span>
+            <span>Alternatives</span>
+            <span>Team</span>
+            <span>More</span>
+          </div>
+          <div class="gallery">
+            <img
+              src="https://ph-files.imgix.net/de28f51d-2ebe-405f-ab02-33ad951e082b.png?auto=compress&codec=mozjpeg&cs=strip&auto=format&w=640"
+              alt="CometChat gallery 1"
+            />
+            <img
+              src="https://ph-files.imgix.net/139b9d78-9426-4170-a292-98994b5faef2.png?auto=compress&codec=mozjpeg&cs=strip&auto=format&w=640"
+              alt="CometChat gallery 2"
+            />
+            <img
+              src="https://ph-files.imgix.net/6a2dbef9-ff05-4c70-a5a9-2be318a31491.jpeg?auto=compress&codec=mozjpeg&cs=strip&auto=format&w=640"
+              alt="CometChat gallery 3"
+            />
+          </div>
+          <div class="toolbar">
+            <span class="pill">Free</span>
+            <span class="pill">Launch tags: User Experience</span>
+            <span class="pill">Developer Tools</span>
+            <span class="pill">Artificial Intelligence</span>
+          </div>
+        </div>
+
+        <div class="card overview-card">
+          <h2>Why makers love AI Agent Platform by CometChat</h2>
+          <p>
+            Get a user-facing AI agent, or copilot — fully built, hosted and
+            production-ready. CometChat handles the agent logic, UI, safety,
+            notifications, and analytics so you can go live in minutes, not
+            months. Scalable, compliant, and enterprise-ready from day one.
+          </p>
+          <ul>
+            <li>
+              Done-for-you agent builds &amp; hosting with Agent Builder
+              (private beta) so your team can ship without staffing an AI squad.
+            </li>
+            <li>
+              CometChat Agent Protocol lets advanced teams bring their own
+              stack, connect popular builders, or integrate fully custom logic
+              without glue code.
+            </li>
+            <li>
+              Seamless user experiences with production-grade chat UI, memory,
+              retries, and handoff — plus moderation, notifications, and
+              analytics included.
+            </li>
+          </ul>
+        </div>
+
+        <div class="card maker-card">
+          <h2>Maker's note</h2>
+          <div class="maker-header">
+            <div class="maker-avatar">AG</div>
+            <div class="maker-meta">
+              <strong>Anant Garg</strong>
+              <span>Founder &amp; CTO @ CometChat · Maker</span>
+              <span>9h ago</span>
+            </div>
+          </div>
+          <div class="maker-body">
+            <p>
+              👋 Hey Product Hunt! Anant here, founder &amp; CTO at CometChat.
+            </p>
+            <p>
+              🎁 We’re launching the
+              <strong>CometChat Full Stack AI Agent Platform</strong> —
+              completely free for the first 500 teams till end of the year.
+            </p>
+            <p>
+              <strong>
+                We’ll help you build and add an AI Copilot or Assistant directly
+                inside your app or website
+              </strong>
+              — with full platform access, hosting, and even agent builds
+              included.
+            </p>
+            <p>
+              👉 Sign up for the offer here:&nbsp;
+              <a
+                href="https://www.cometchat.com/ai-agent-free-offer"
+                target="_blank"
+                rel="noopener"
+                >https://www.cometchat.com/ai-agent-free-offer</a
+              >
+              (first come first serve!)
+            </p>
+            <p>
+              CometChat now ships an Agent Builder (currently in private beta)
+              plus BYO-agent support. You can quickly create or connect your own
+              user-facing AI agents or copilots — complete with prebuilt chat
+              UI, moderation, notifications, analytics, and human handoff.
+            </p>
+            <p>Some highlights we’re especially proud of:</p>
+            <ul>
+              <li>
+                Done-for-you agent builds &amp; hosting — Powered by our Agent
+                Builder (private beta), we’ll help you create, host, and deploy
+                your agent end-to-end.
+              </li>
+              <li>
+                CometChat Agent Protocol — advanced teams can plug in popular
+                builders or a custom stack without glue code.
+              </li>
+              <li>
+                Seamless user experiences — your agent can respond, assist, and
+                collaborate directly within user chats.
+              </li>
+              <li>
+                UI Kits for every major platform — React, Angular, Vue, iOS,
+                Android, Flutter.
+              </li>
+              <li>
+                Enterprise-grade compliance — SOC 2, GDPR, ISO 27001, HIPAA.
+              </li>
+              <li>
+                Production-ready chat UI with thinking states, retries, and
+                memory pills.
+              </li>
+              <li>
+                Guardrails &amp; moderation with an LLM-powered safety platform
+                to catch toxicity, PII, jailbreaks, and prompt injections in
+                realtime.
+              </li>
+              <li>
+                Notifications, analytics, and insights are built in from day
+                one.
+              </li>
+            </ul>
+            <p>
+              We’d love for you to try it, break it, and tell us what you think.
+              The team and I will be hanging out in the comments all day,
+              answering questions and swapping nerdy agent stories. 🚀
+            </p>
+            <p>– Anant</p>
+          </div>
+          <div class="meta-toolbar">
+            <span>▲ Upvote</span>
+            <span>▼ Downvote</span>
+            <span>⟳ Share</span>
+            <span>9h ago</span>
+          </div>
+        </div>
+
+        <div class="sponsor-card">
+          <small>Promoted</small>
+          <strong>Chargeflow Prevent — Prevent the next chargeback.</strong>
+          <span
+            >Smart automation that stops fraud and recovers revenue before it
+            leaks.</span
+          >
+          <a href="#" style="color: var(--badge-text); font-weight: 600"
+            >Learn more →</a
+          >
+        </div>
+
+        <div class="card poll-card">
+          <h3>Do you use AI Agent Platform by CometChat?</h3>
+          <div class="poll-actions">
+            <button>I use this</button>
+            <button>I use something else</button>
+          </div>
+        </div>
+
+        <div class="card reviews-card">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
+            <h2>Reviews</h2>
+            <a href="#" style="color: var(--badge-text); font-weight: 600"
+              >Helpful ▾</a
+            >
+          </div>
+          <div class="empty">
+            <strong
+              >Be the first to review AI Agent Platform by CometChat</strong
+            >
+            <p style="margin-top: 6px">
+              No reviews yet — share your experience to help other makers.
+            </p>
             <a
-              href="https://www.producthunt.com/products/full-stack-ai-agent-platform-cometchat"
+              class="btn primary"
+              href="https://www.producthunt.com/products/full-stack-ai-agent-platform-cometchat/reviews"
               target="_blank"
               rel="noopener"
-              >Product Hunt listing</a
+              >Leave a review</a
             >
+          </div>
+        </div>
+      </section>
+
+      <aside class="sidebar">
+        <div class="panel">
+          <h3 style="margin: 0">Company info</h3>
+          <div class="follow-actions">
             <a
-              href="https://www.cometchat.com/ai-agent-free-offer"
-              target="_blank"
-              rel="noopener"
-              >Reserve the free offer</a
-            >
-            <a
+              class="btn primary"
               href="https://www.cometchat.com/full-stack-agent-platform?ref=producthunt"
               target="_blank"
               rel="noopener"
-              >Full product overview</a
+              >Visit website</a
             >
-            <a
-              href="https://www.producthunt.com/p/full-stack-ai-agent-platform-cometchat"
-              target="_blank"
-              rel="noopener"
-              >Launch discussion thread</a
-            >
-            <a
-              href="https://twitter.com/cometchat"
-              target="_blank"
-              rel="noopener"
-              >Follow on X</a
+            <a class="btn" href="#">Add to collection</a>
+          </div>
+          <div class="stats-list">
+            <span>Launched in 2025</span>
+            <span>Follow on X →</span>
+            <span
+              >Forum:
+              <a
+                href="https://www.producthunt.com/p/full-stack-ai-agent-platform-cometchat"
+                target="_blank"
+                rel="noopener"
+                >p/full-stack-ai-agent-platform-cometchat</a
+              ></span
             >
           </div>
         </div>
 
-        <div class="side-card">
-          <h3>Team</h3>
-          <div class="team-list">
-            <div class="team-member">
-              <div class="avatar">AG</div>
-              <div>
-                <strong>Anant Garg</strong>
-                <div style="font-size: 13px; color: var(--muted)">
-                  Founder &amp; CTO
-                </div>
-              </div>
-            </div>
-            <div class="team-member">
-              <div class="avatar">CC</div>
-              <div>
-                <strong>CometChat Launch Crew</strong>
-                <div style="font-size: 13px; color: var(--muted)">
-                  Agent Builder &amp; Solutions Team
-                </div>
-              </div>
-            </div>
+        <div class="panel">
+          <h3 style="margin: 0">Launch Team</h3>
+          <div class="stats-list">
+            <span>Rajiv Ayyangar — Co-founder &amp; CEO</span>
+            <span>Anant Garg — Founder &amp; CTO</span>
+            <span>CometChat Launch Crew — Agent Builder &amp; Solutions</span>
           </div>
         </div>
 
-        <div class="side-card">
-          <h3>Have you tried it?</h3>
-          <p style="margin: 0 0 16px; color: var(--muted)">
-            Share what you build with the AI Agent Platform and help other
-            makers learn from your launch.
-          </p>
-          <a
-            class="btn primary"
-            style="width: 100%; display: inline-block; text-align: center"
-            href="https://www.producthunt.com/products/full-stack-ai-agent-platform-cometchat/reviews"
-            target="_blank"
-            rel="noopener"
-            >Leave a review</a
-          >
+        <div class="panel">
+          <h3 style="margin: 0">Similar products</h3>
+          <div class="similar-list">
+            <div class="similar-item">
+              <strong>Nelly</strong>
+              <span>Create your own team of AI agents</span>
+              <span>AI Chatbots · No-Code AI Agent Builder</span>
+            </div>
+            <div class="similar-item">
+              <strong>GPTBots.ai</strong>
+              <span>Build Smarter AI Teams, End-to-End.</span>
+              <span>Customer support tools · No-code Platforms</span>
+            </div>
+            <div class="similar-item">
+              <strong>Shipable</strong>
+              <span
+                >Build production-ready AI agents from a single prompt.</span
+              >
+            </div>
+            <div class="similar-item">
+              <strong>Smartly.ai</strong>
+              <span>All-in-one platform for voice and chatbots.</span>
+            </div>
+          </div>
         </div>
       </aside>
     </main>
+
     <div id="cometChatMount"></div>
   </body>
 </html>
