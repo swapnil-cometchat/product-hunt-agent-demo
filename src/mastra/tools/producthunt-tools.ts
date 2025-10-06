@@ -306,9 +306,8 @@ export const confettiTool = createTool({
 
 /**
  * Frontend Action: Open Product Listing
- * Invoking this tool should open the live Product Hunt listing for the
- * CometChat AI Agent Platform in a new browser tab. The frontend listens for
- * the tool result and handles the navigation.
+ * Invoking this tool navigates the demo to the local CometChat listing page so
+ * users can browse the Product Hunt-style content without popping a new tab.
  */
 export const listingTool = createTool({
   id: "listing-tool",
@@ -326,14 +325,16 @@ export const listingTool = createTool({
     .describe("Optional payload when requesting the listing be opened."),
   outputSchema: z.object({
     action: z.literal("OPEN_URL"),
-    url: z.string().url(),
+    url: z
+      .string()
+      .min(1)
+      .describe("URL or path to open (absolute or relative)."),
     reason: z.string().optional(),
     timestamp: z.string(),
   }),
   execute: async ({ context }) => {
     const cfg = (context || {}) as { reason?: string };
-    const url =
-      "https://www.producthunt.com/products/full-stack-ai-agent-platform-cometchat?launch=ai-agent-platform-by-cometchat";
+    const url = "./cometchat-listing.html";
     return {
       action: "OPEN_URL" as const,
       url,

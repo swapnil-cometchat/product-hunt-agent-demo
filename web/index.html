@@ -380,6 +380,10 @@
           position: static;
         }
       }
+
+      /* .cometchat-ai-assistant-message-bubble li * {
+         vertical-align: baseline !important
+      } */
     </style>
     <!-- CometChat Visual Builder (No-Code) -->
     <script
@@ -522,15 +526,24 @@
 
       function handleListing(args) {
         const defaults = {
-          url: "https://www.producthunt.com/products/full-stack-ai-agent-platform-cometchat?launch=ai-agent-platform-by-cometchat",
+          url: "./cometchat-listing.html",
         };
         const cfg = { ...defaults, ...normalizeArgs(args) };
-        const win = window.open(cfg.url, "_blank", "noopener");
-        if (!win) {
-          console.warn(
-            "[ListingTool] Popup blocked, consider allowing popups for this demo.",
-          );
+
+        try {
+          if (typeof cfg.url === "string" && cfg.url.length > 0) {
+            window.location.assign(cfg.url);
+          } else {
+            console.warn(
+              "[ListingTool] Invalid URL provided, skipping redirect.",
+            );
+            return { ok: false, error: "invalid-url" };
+          }
+        } catch (error) {
+          console.error("[ListingTool] Failed to navigate", error);
+          return { ok: false, error: String(error) };
         }
+
         return { ok: true, url: cfg.url };
       }
 
@@ -680,7 +693,6 @@
               <a
                 class="item-overlay"
                 href="./cometchat-listing.html"
-                target="_blank"
                 aria-label="Open CometChat demo listing"
               ></a>
             </article>
