@@ -363,6 +363,197 @@
         }
       }
     </style>
+    <!-- CometChat Visual Builder (No-Code) -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"
+    ></script>
+    <script>
+      window.PH_AGENT_API =
+        window.PH_AGENT_API ||
+        (location.origin.includes("github.io")
+          ? "https://your-server.example.com"
+          : "http://localhost:8787");
+    </script>
+    <script>
+      const COMETCHAT_CREDENTIALS = {
+        appID: "28199255746b91be",
+        appRegion: "in",
+        authKey: "38bebf7993271723d05f3169bc295b0e7e5b6ef4",
+      };
+
+      function normalizeArgs(args) {
+        if (typeof args === "string") {
+          try {
+            return JSON.parse(args);
+          } catch (error) {
+            return { value: args };
+          }
+        }
+        return typeof args === "object" && args ? args : {};
+      }
+
+      function handleConfetti(args) {
+        const cfg = normalizeArgs(args);
+        const defaults = {
+          particleCount: 180,
+          spread: 90,
+          startVelocity: 45,
+          ticks: 200,
+          origin: { x: 0.5, y: 0.5 },
+          colors: [
+            "#ff577f",
+            "#ff884b",
+            "#ffd384",
+            "#fff9b0",
+            "#00c2ff",
+            "#7b5cff",
+          ],
+        };
+        const finalCfg = {
+          ...defaults,
+          ...cfg,
+          origin: {
+            x:
+              cfg.origin && typeof cfg.origin.x === "number"
+                ? cfg.origin.x
+                : defaults.origin.x,
+            y:
+              cfg.origin && typeof cfg.origin.y === "number"
+                ? cfg.origin.y
+                : defaults.origin.y,
+          },
+        };
+        loadConfetti().then((confetti) => {
+          if (!confetti) return fallbackConfetti();
+          confetti({
+            particleCount: finalCfg.particleCount,
+            spread: finalCfg.spread,
+            startVelocity: finalCfg.startVelocity,
+            origin: finalCfg.origin,
+            colors: finalCfg.colors,
+            ticks: finalCfg.ticks,
+          });
+          console.log("[Confetti] Fired", finalCfg);
+        });
+        return { ok: true };
+      }
+
+      function loadConfetti() {
+        return new Promise((resolve) => {
+          if (window.confetti) return resolve(window.confetti);
+          const existing = document.querySelector("script[data-confetti]");
+          if (existing) {
+            existing.addEventListener("load", () => resolve(window.confetti));
+            return;
+          }
+          const script = document.createElement("script");
+          script.dataset.confetti = "true";
+          script.src =
+            "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.0/dist/confetti.browser.min.js";
+          script.onload = () => resolve(window.confetti);
+          script.onerror = () => {
+            console.warn("[Confetti] Failed to load library, using fallback");
+            resolve(null);
+          };
+          document.head.appendChild(script);
+        });
+      }
+
+      function fallbackConfetti() {
+        const existing = document.getElementById("fallback-confetti-canvas");
+        const canvas =
+          existing ||
+          Object.assign(
+            document.body.appendChild(document.createElement("canvas")),
+            { id: "fallback-confetti-canvas" },
+          );
+        canvas.style.cssText =
+          "position:fixed;inset:0;pointer-events:none;z-index:9999";
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+        const ctx = canvas.getContext("2d");
+        const pieces = Array.from({ length: 100 }, () => ({
+          x: Math.random() * canvas.width,
+          y: -20 - Math.random() * canvas.height,
+          r: 4 + Math.random() * 5,
+          c: `hsl(${Math.random() * 360},90%,60%)`,
+          vy: 2 + Math.random() * 3,
+          vx: -1 + Math.random() * 2,
+        }));
+        let frames = 0;
+        (function loop() {
+          frames += 1;
+          if (frames > 240) return;
+          requestAnimationFrame(loop);
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          pieces.forEach((piece) => {
+            piece.x += piece.vx;
+            piece.y += piece.vy;
+            if (piece.y > canvas.height) piece.y = -10;
+            ctx.fillStyle = piece.c;
+            ctx.fillRect(piece.x, piece.y, piece.r, piece.r);
+          });
+        })();
+      }
+
+      function handleListing(args) {
+        const defaults = {
+          url: "./cometchat-listing.html",
+        };
+        const cfg = { ...defaults, ...normalizeArgs(args) };
+
+        try {
+          if (typeof cfg.url === "string" && cfg.url.length > 0) {
+            window.location.assign(cfg.url);
+          } else {
+            console.warn(
+              "[ListingTool] Invalid URL provided, skipping redirect.",
+            );
+            return { ok: false, error: "invalid-url" };
+          }
+        } catch (error) {
+          console.error("[ListingTool] Failed to navigate", error);
+          return { ok: false, error: String(error) };
+        }
+
+        return { ok: true, url: cfg.url };
+      }
+
+      const COMETCHAT_LAUNCH_OPTIONS = {
+        targetElementID: "cometChatMount",
+        isDocked: true,
+        width: "450px",
+        height: "550px",
+        chatType: "user",
+        defaultChatID: "e1e8e2cc-91d1-4441-849d-6aa13d0cabae",
+        variantID: "68c65fee227251147a0e4933",
+        aiAssistantTools: {
+          confettiTool: handleConfetti,
+          "confetti-tool": handleConfetti,
+          listingTool: handleListing,
+          "listing-tool": handleListing,
+        },
+      };
+
+      const COMETCHAT_USER_UID = "cometchat-uid-2";
+
+      window.addEventListener("DOMContentLoaded", () => {
+        if (!window.CometChatApp) {
+          console.error("[CometChat] Embed script not loaded");
+          return;
+        }
+        CometChatApp.init(COMETCHAT_CREDENTIALS)
+          .then(() => CometChatApp.login({ uid: COMETCHAT_USER_UID }))
+          .then(() => CometChatApp.launch(COMETCHAT_LAUNCH_OPTIONS))
+          .then(() => {
+            console.log("[CometChat] Chat launched!");
+          })
+          .catch((error) => {
+            console.error("[CometChat] Error:", error);
+          });
+      });
+    </script>
   </head>
   <body>
     <header>
@@ -748,5 +939,6 @@
         </div>
       </aside>
     </main>
+    <div id="cometChatMount"></div>
   </body>
 </html>
