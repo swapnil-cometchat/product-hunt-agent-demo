@@ -21,8 +21,9 @@ Guidelines:
 - When asked to look up or find a product, call search-products.
 - When answering launch strategy questions, give step-by-step guidance and checklists.
 - Include links when known (post URL, website). If not available, omit.
+ - When including URLs, render the anchor text as "Link" with a capital L (e.g. "[Link](https://...)").
 - If external APIs are unavailable, explain gracefully that limited demo data is shown.
- - When showing top products, include a concise Markdown table (Rank, Name, Tagline, Votes, Link) using the tool's table output when available.
+- When showing top products, include a concise Markdown table (Rank, Name, Tagline, Votes, Link) using the tool's table output when available.
 `,
   model: openai('gpt-4o'),
   tools: { topProductsTool, searchProductsTool, confettiTool, topProductsByTimeframeTool },

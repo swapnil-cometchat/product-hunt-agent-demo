@@ -93,7 +93,8 @@
       }
     </style>
     <!-- CometChat Visual Builder (No-Code) -->
-    <script defer src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@latest/dist/main.js"></script>
+     <script defer src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"></script>
+    <!-- <script defer src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.0.9/dist/main.js"></script> -->
     <script>
       // Base URL for our Product Hunt Agent API
       window.PH_AGENT_API = window.PH_AGENT_API || (location.origin.includes('github.io') ? 'https://your-server.example.com' : 'http://localhost:8787');
@@ -175,19 +176,30 @@
         let frames = 0; (function loop(){ frames++; if(frames>240) return; requestAnimationFrame(loop); ctx.clearRect(0,0,canvas.width,canvas.height); pieces.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.y>canvas.height) p.y=-10; ctx.fillStyle=p.c; ctx.fillRect(p.x,p.y,p.r,p.r); }); })();
       }
 
+      function handleListing(){
+        const url = 'https://www.producthunt.com/products/full-stack-ai-agent-platform-cometchat?launch=ai-agent-platform-by-cometchat';
+        window.open(url, '_blank', 'noopener');
+        return { ok: true, url };
+      }
+
       // --- CometChat Launch Options ---
       const COMETCHAT_LAUNCH_OPTIONS = {
         targetElementID: 'cometChatMount',  // Element ID to mount the widget
         isDocked: true, // true = floating bubble, false = embedded
-        width: '350px', // Widget width
+        width: '450px', // Widget width
         height: '550px',  // Widget height
         chatType: "user",
-        defaultChatID: "c7d00bd7-0d43-485e-bc05-4c6c6c52e645",  // Agent ID to open chat by default
+        //defaultChatID: "c7d00bd7-0d43-485e-bc05-4c6c6c52e645",  // Agent ID to open chat by default
+        //variantID: "68c65fee227251147a0e4933",  // Variant configuration ID
+        
+        defaultChatID: "e1e8e2cc-91d1-4441-849d-6aa13d0cabae",  // Agent ID to open chat by default
         variantID: "68c65fee227251147a0e4933",  // Variant configuration ID
+        
         aiAssistantTools: { 
           // Support both naming conventions
           'confettiTool': handleConfetti,
           'confetti-tool': handleConfetti,
+          'listingTool' : handleListing
         },
       };
 
@@ -270,7 +282,7 @@
                   <span>932</span>
                 </div>
               </div>
-              <a class="item-overlay" href="https://cometchat.com/" target="_blank" rel="noopener" aria-label="Open CometChat"></a>
+              <a class="item-overlay" href="./cometchat-listing.html" target="_blank" aria-label="Open CometChat demo listing"></a>
             </article>
 
             <!-- 2: Dummy -->
@@ -419,7 +431,18 @@
       window.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-demo-nav]').forEach((el) => el.addEventListener('click', demoToast));
         const cc = document.querySelector('[data-cometchat-item]');
-        if (cc) cc.addEventListener('click', () => window.open('https://cometchat.com/', '_blank'));
+        if (cc) {
+          const overlay = cc.querySelector('.item-overlay');
+          cc.addEventListener('click', (event) => {
+            if (event.defaultPrevented) return;
+            const target = event.target;
+            if (target instanceof Element && target.closest('a')) return;
+            if (overlay instanceof HTMLAnchorElement && overlay.href) {
+              event.preventDefault();
+              window.location.href = overlay.href;
+            }
+          });
+        }
       });
     </script>
   </body>

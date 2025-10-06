@@ -23,7 +23,7 @@ export const topProductsTool = createTool({
   execute: async () => {
     const posts = await getTopProductsByVotes(3);
     const toCell = (v: any) => (v == null ? '-' : String(v).replace(/\|/g, '\\|'));
-    const rows = posts.map((p: any, i: number) => `| ${i + 1} | ${toCell(p.name)} | ${toCell(p.tagline)} | ${toCell(p.votesCount)} | ${p.url ? `[link](${p.url})` : '-'} |`);
+    const rows = posts.map((p: any, i: number) => `| ${i + 1} | ${toCell(p.name)} | ${toCell(p.tagline)} | ${toCell(p.votesCount)} | ${p.url ? `[Link](${p.url})` : '-'} |`);
     const table = [
       '| Rank | Name | Tagline | Votes | Link |',
       '| ---: | --- | --- | ---: | --- |',
@@ -127,7 +127,7 @@ export const topProductsByTimeframeTool = createTool({
     const window = parseTimeframe(timeframe, tz);
     const posts = await getTopProductsByTimeframe({ first: limit, timeframe, tz });
     const toCell = (v: any) => (v == null ? '-' : String(v).replace(/\|/g, '\\|'));
-    const rows = posts.map((p: any, i: number) => `| ${i + 1} | ${toCell(p.name)} | ${toCell(p.tagline)} | ${toCell(p.votesCount)} | ${p.url ? `[link](${p.url})` : '-'} |`);
+    const rows = posts.map((p: any, i: number) => `| ${i + 1} | ${toCell(p.name)} | ${toCell(p.tagline)} | ${toCell(p.votesCount)} | ${p.url ? `[Link](${p.url})` : '-'} |`);
     const table = [
       '| Rank | Name | Tagline | Votes | Link |',
       '| ---: | --- | --- | ---: | --- |',
