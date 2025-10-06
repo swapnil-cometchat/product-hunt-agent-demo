@@ -208,9 +208,15 @@
         color: #2b3645;
       }
       .hero-card {
-        grid-template-columns: auto 1fr auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 24px;
+      }
+      .hero-left {
+        display: flex;
         gap: 20px;
-        align-items: center;
+        align-items: flex-start;
       }
       .hero-logo {
         width: 80px;
@@ -227,30 +233,49 @@
         display: block;
         object-fit: cover;
       }
-      .content {
-        min-width: 0;
+      .hero-meta {
+        display: grid;
+        gap: 12px;
       }
-      .title {
-        font-weight: 700;
+      .hero-title h1 {
+        margin: 0;
+        font-size: 28px;
       }
-      .subtitle {
+      .hero-subtitle {
+        margin: 4px 0 0;
         color: var(--muted);
-        margin-top: 4px;
+        font-size: 16px;
       }
-      .tags,
-      .hero-meta .tags {
+      .hero-stats {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .hero-categories {
         display: flex;
-        gap: 10px;
         flex-wrap: wrap;
-        margin-top: 8px;
+        gap: 10px;
         color: var(--muted);
         font-size: 13px;
       }
-      .dot::before,
-      .hero-meta .tags span::before {
+      .hero-categories span + span::before {
         content: "·";
         margin-right: 10px;
         color: #a0a8b0;
+      }
+      .hero-description {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+      .hero-right {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-end;
+      }
+      .hero-button {
+        min-width: 160px;
+        text-align: center;
       }
       .stats {
         display: flex;
@@ -273,6 +298,17 @@
       }
 
       /* Listing specific */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255, 92, 54, 0.12);
+        color: #ff5c36;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+      }
       .hero-meta h1 {
         margin: 0;
         font-size: 28px;
@@ -479,10 +515,15 @@
           gap: 20px;
         }
         .hero-card {
-          grid-template-columns: 1fr;
+          flex-direction: column;
+          gap: 20px;
         }
-        .hero-actions {
-          justify-items: start;
+        .hero-left {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .hero-right {
+          align-items: flex-start;
         }
       }
     </style>
@@ -718,25 +759,40 @@
     <main class="container main listing-main">
       <section class="content">
         <div class="card hero-card">
-          <div class="hero-meta">
-            <h1>AI Agent Platform by CometChat</h1>
-            <p>AI Copilot for your website/app. Free for first 500 teams.</p>
-            <div class="tags">
-              <span>AI Chatbots</span>
-              <span>AI Agents</span>
-              <span>No-Code AI Agent Builder</span>
+          <div class="hero-left">
+            <div class="hero-logo">
+              <img src="./cometchat-logo.png" alt="CometChat logo" />
+            </div>
+            <div class="hero-meta">
+              <div class="hero-title">
+                <h1>AI Agent Platform by CometChat</h1>
+                <p class="hero-subtitle">
+                  AI Copilot for your website/app. Free for first 500 teams.
+                </p>
+              </div>
+              <div class="hero-stats">1 follower</div>
+              <div class="hero-categories">
+                <span>AI Chatbots</span>
+                <span>AI Agents</span>
+                <span>No-Code AI Agent Builder</span>
+              </div>
+              <p class="hero-description">
+                Get a user-facing AI agent, or copilot — fully built, hosted and
+                production-ready. CometChat handles the agent logic, UI, safety,
+                notifications, and analytics so you can go live in minutes, not
+                months. Scalable, compliant, and enterprise-ready from day one.
+              </p>
             </div>
           </div>
-          <div class="hero-actions">
+          <div class="hero-right">
             <span class="badge">🎁 First 500 get it free</span>
             <a
-              class="btn primary"
+              class="btn primary hero-button"
               href="https://www.cometchat.com/full-stack-agent-platform?ref=producthunt"
               target="_blank"
               rel="noopener"
               >Visit website</a
             >
-            <button class="btn">Follow</button>
           </div>
         </div>
 
@@ -750,10 +806,6 @@
             <span>More</span>
           </div>
           <div class="gallery">
-            <img
-              src="https://ph-files.imgix.net/de28f51d-2ebe-405f-ab02-33ad951e082b.png?auto=compress&codec=mozjpeg&cs=strip&auto=format&w=640"
-              alt="CometChat gallery 1"
-            />
             <img
               src="https://ph-files.imgix.net/139b9d78-9426-4170-a292-98994b5faef2.png?auto=compress&codec=mozjpeg&cs=strip&auto=format&w=640"
               alt="CometChat gallery 2"
@@ -960,8 +1012,8 @@
         <div class="panel">
           <h3 style="margin: 0">Launch Team</h3>
           <div class="stats-list">
-            <span>Rajiv Ayyangar — CEO - Product Hunt</span>
-            <span>Anant Garg — CTO - CometChat</span>
+            <span>Rajiv Ayyangar — CEO (Product Hunt)</span>
+            <span>Anant Garg — CTO (CometChat)</span>
             <span>CometChat Launch Crew — Agent Builder &amp; Solutions</span>
           </div>
         </div>
