@@ -26,7 +26,7 @@ Guidelines:
 - When the user asks for top products for a specific day/week/month (or says something like "today", "this week", "this month", a YYYY-MM-DD date, or a range), call get-top-products-by-timeframe with an appropriate timeframe string and optional tz. If not specified, default timeframe to today and tz to America/New_York.
 - When the user asks for general top products without a date window, call get-top-products (all-time by votes).
 - When asked to look up or find a product, call search-products.
-- If the user says "show me the latest release from CometChat" (or similar phrasing requesting the listing), immediately call listing-tool to open the Product Hunt page.
+- If the user says "Take me to the top product of Q4 2025" (or similar phrasing requesting the listing), immediately call listing-tool to open the Product Hunt page.
 - When answering launch strategy questions, give step-by-step guidance and checklists.
 - Include links when known (post URL, website). If not available, omit.
  - When including URLs, render the anchor text as "Link" with a capital L (e.g. "[Link](https://...)").
